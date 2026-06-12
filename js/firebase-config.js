@@ -8,17 +8,15 @@
 //  a admin rozhranie je vypnuté.
 // ============================================================
 
-window.FIREBASE_CONFIG = null;
-
-// Po vytvorení web aplikácie vo Firebase to bude vyzerať takto:
-// window.FIREBASE_CONFIG = {
-//   apiKey: "AIza....",
-//   authDomain: "tvoj-projekt.firebaseapp.com",
-//   projectId: "tvoj-projekt",
-//   storageBucket: "tvoj-projekt.appspot.com",
-//   messagingSenderId: "123456789",
-//   appId: "1:123456789:web:abcdef"
-// };
+window.FIREBASE_CONFIG = {
+  apiKey: "AIzaSyAODf5ssRXF37Lhf_uJKoxPe1n4Kw7Nqj8",
+  authDomain: "alice-e7442.firebaseapp.com",
+  projectId: "alice-e7442",
+  storageBucket: "alice-e7442.firebasestorage.app",
+  messagingSenderId: "836252786708",
+  appId: "1:836252786708:web:bf63fb3f5255f1fb5c0701",
+  measurementId: "G-9WSWVL6M2N"
+};
 
 // E-mail s právom upravovať obsah (musí sedieť s firestore.rules):
 window.ADMIN_EMAIL = "marek.pinka@gmail.com";
