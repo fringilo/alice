@@ -46,7 +46,7 @@
       <div class="foot-brand">🐾 Lagotto Romagnolo</div>
       <div>Denník &amp; sprievodca plemenom</div>
     </div>
-    <div>Obsah sprievodcu vychádza z FCI štandardu č. 298</div>
+    <div>Obsah sprievodcu vychádza z FCI štandardu č. 298 · <a href="admin.html">Admin</a></div>
   </div>
 </footer>
 
@@ -60,8 +60,13 @@
   </div>
 </nav>
 
+<script src="js/firebase-config.js"></script>
 <script src="js/data/vlogs.js"></script>
 <script src="js/main.js"></script>
-<script>renderVlogs("vlogs");</script>
+<script src="js/cms.js"></script>
+<script>
+  renderVlogs("vlogs");
+  document.addEventListener("cms-ready", () => renderVlogs("vlogs"));
+</script>
 </body>
 </html>

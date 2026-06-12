@@ -3,10 +3,11 @@
 const LANG = () => window.SITE_LANG || "sk";
 const BASE = () => window.ASSET_BASE || "";
 
-/* prefix relative asset paths so pages in /en/ resolve them */
+/* prefix relative asset paths so pages in /en/ resolve them
+   (absolute URLs and inline data:/blob: images pass through untouched) */
 function asset(p) {
   if (!p) return p;
-  return /^(https?:)?\/\//.test(p) ? p : BASE() + p;
+  return /^(https?:)?\/\/|^(data|blob):/.test(p) ? p : BASE() + p;
 }
 
 /* tr("slovensky", "english") */

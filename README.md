@@ -32,7 +32,28 @@ static hosting — upload the whole folder.
 | `galeria.html` | `en/gallery.html` | Photo gallery with lightbox |
 | `vlogy.html` | `en/vlogs.html` | Vlogs (YouTube embeds or local video files) |
 
-## Adding content (no coding needed)
+## Admin interface (Firebase)
+
+The site has a browser-based admin at `admin.html` (linked discreetly in the
+footer). After logging in (Firebase Authentication, email/password) you can add,
+edit and delete diary posts, gallery photos and vlogs directly on the website —
+no file editing needed. Content is stored in **Firestore**; photos are compressed
+in the browser (max 1600 px JPEG) and stored inline, so the free Spark plan is
+enough. Videos are added as YouTube links.
+
+Setup (one-time):
+1. In the [Firebase console](https://console.firebase.google.com) create a
+   **Web app** and copy its config into `js/firebase-config.js`.
+2. Enable **Authentication → Sign-in method → Email/Password** and add a user
+   with the admin email (must match `firestore.rules` and `js/firebase-config.js`).
+3. Create a **Firestore database** (production mode).
+4. Deploy the security rules: `npx firebase-tools deploy --only firestore:rules`
+   (or paste `firestore.rules` into Firestore → Rules in the console).
+
+The public pages merge Firestore content with the static seeds in `js/data/` and
+work unchanged when Firebase is not configured.
+
+## Adding content via files (no Firebase needed)
 
 All content lives in three data files under `js/data/`. Each file starts with
 a comment showing the exact format. **Both language versions read the same

@@ -46,7 +46,7 @@
       <div class="foot-brand">🐾 Lagotto Romagnolo</div>
       <div>Diary &amp; breed guide</div>
     </div>
-    <div>The guide content is based on FCI Standard No. 298</div>
+    <div>The guide content is based on FCI Standard No. 298 · <a href="../admin.html">Admin</a></div>
   </div>
 </footer>
 
@@ -61,8 +61,13 @@
 </nav>
 
 <script>window.SITE_LANG = "en"; window.ASSET_BASE = "../";</script>
+<script src="../js/firebase-config.js"></script>
 <script src="../js/data/vlogs.js"></script>
 <script src="../js/main.js"></script>
-<script>renderVlogs("vlogs");</script>
+<script src="../js/cms.js"></script>
+<script>
+  renderVlogs("vlogs");
+  document.addEventListener("cms-ready", () => renderVlogs("vlogs"));
+</script>
 </body>
 </html>

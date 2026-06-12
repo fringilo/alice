@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administrácia – Lagotto Romagnolo</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔑</text></svg>">
+  <style>
+    .admin-wrap { max-width: 860px; margin: 0 auto; padding: 0 24px 80px; }
+    .admin-card {
+      background: var(--surface-container-lowest);
+      border-radius: var(--r-xl); box-shadow: var(--shadow-soft);
+      padding: 24px; margin-bottom: 24px;
+    }
+    .admin-card h2 { font-size: 1.3rem; margin-bottom: 12px; }
+    .field { margin-bottom: 14px; }
+    .field label {
+      display: block; font-family: var(--font-label); font-size: .8rem;
+      font-weight: 600; color: var(--on-surface-variant); margin-bottom: 4px;
+    }
+    .field input[type=text], .field input[type=email], .field input[type=password],
+    .field input[type=date], .field input[type=url], .field textarea {
+      width: 100%; padding: 11px 14px;
+      background: var(--surface-container-low);
+      border: 1px solid var(--outline-variant); border-radius: var(--r-sm);
+      font-family: var(--font-display); font-size: .95rem; color: var(--on-surface);
+      outline: none; transition: border-color .2s;
+    }
+    .field textarea { min-height: 110px; resize: vertical; }
+    .field input:focus, .field textarea:focus { border-color: var(--primary); }
+    .field .hint { font-size: .78rem; color: var(--secondary); margin-top: 3px; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+    .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+    .tabs button {
+      font-family: var(--font-label); font-weight: 600; font-size: .9rem;
+      padding: 10px 22px; border-radius: var(--r-full);
+      border: 1px solid var(--outline-variant); cursor: pointer;
+      background: var(--surface-container-lowest); color: var(--on-surface-variant);
+    }
+    .tabs button.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .item-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 0; border-bottom: 1px solid var(--surface-container-high);
+    }
+    .item-row:last-child { border-bottom: none; }
+    .item-row img { width: 58px; height: 44px; object-fit: cover; border-radius: var(--r-sm); }
+    .item-row .grow { flex: 1; min-width: 0; }
+    .item-row .t { font-weight: 600; font-size: .95rem; color: var(--primary);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .item-row .d { font-size: .78rem; color: var(--secondary); font-family: var(--font-label); }
+    .item-row button {
+      background: var(--surface-container-low); border: 1px solid var(--outline-variant);
+      border-radius: var(--r-full); width: 38px; height: 38px; cursor: pointer;
+      color: var(--on-surface-variant); flex-shrink: 0;
+    }
+    .item-row button:hover { color: var(--primary); border-color: var(--primary); }
+    .item-row button.del:hover { color: #ba1a1a; border-color: #ba1a1a; }
+    #toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: var(--primary); color: #fff; padding: 12px 26px;
+      border-radius: var(--r-full); font-family: var(--font-label);
+      font-size: .9rem; box-shadow: var(--shadow-lift);
+      opacity: 0; pointer-events: none; transition: opacity .3s; z-index: 200;
+    }
+    #toast.show { opacity: 1; }
+    .hidden { display: none !important; }
+    .userbar { display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+    .userbar .who { font-family: var(--font-label); font-size: .85rem; color: var(--secondary); }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="index.html">Lagotto <span>Romagnolo</span></a>
+    <nav class="site-nav">
+      <a href="index.html">← Späť na stránku</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container page-head" style="margin-bottom:24px">
+  <span class="chip">Administrácia</span>
+  <h1>Správa obsahu</h1>
+</div>
+
+<div class="admin-wrap">
+
+  <!-- not configured -->
+  <div id="not-configured" class="admin-card hidden">
+    <h2>Firebase ešte nie je pripojený</h2>
+    <p>Vyplň konfiguráciu v súbore <code>js/firebase-config.js</code> podľa návodu
+    v ňom a nahraj stránku znova. Dovtedy funguje stránka len zo statických súborov.</p>
+  </div>
+
+  <!-- login -->
+  <div id="login-box" class="admin-card hidden">
+    <h2>Prihlásenie</h2>
+    <form id="login-form">
+      <div class="field">
+        <label for="login-email">E-mail</label>
+        <input type="email" id="login-email" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="login-pass">Heslo</label>
+        <input type="password" id="login-pass" autocomplete="current-password" required>
+      </div>
+      <button class="btn" type="submit">Prihlásiť sa</button>
+    </form>
+  </div>
+
+  <!-- admin UI -->
+  <div id="admin-ui" class="hidden">
+    <div class="userbar">
+      <span class="who">Prihlásený: <strong id="who-email"></strong></span>
+      <button class="btn secondary" id="logout-btn">Odhlásiť sa</button>
+    </div>
+
+    <div class="tabs">
+      <button data-tab="posts" class="active">📝 Príspevky</button>
+      <button data-tab="gallery">📷 Fotky</button>
+      <button data-tab="vlogs">🎬 Vlogy</button>
+    </div>
+
+    <!-- POSTS -->
+    <div id="tab-posts">
+      <div class="admin-card">
+        <h2 id="post-form-title">Nový príspevok</h2>
+        <form id="post-form">
+          <input type="hidden" id="post-id">
+          <div class="two-col">
+            <div class="field">
+              <label for="post-title">Nadpis (SK)</label>
+              <input type="text" id="post-title" required>
+            </div>
+            <div class="field">
+              <label for="post-title-en">Nadpis (EN, voliteľné)</label>
+              <input type="text" id="post-title-en">
+            </div>
+          </div>
+          <div class="two-col">
+            <div class="field">
+              <label for="post-date">Dátum</label>
+              <input type="date" id="post-date" required>
+            </div>
+            <div class="field">
+              <label for="post-tags">Štítky (oddelené čiarkou)</label>
+              <input type="text" id="post-tags" placeholder="výlet, tréning">
+            </div>
+          </div>
+          <div class="field">
+            <label for="post-body">Text (SK)</label>
+            <textarea id="post-body" required placeholder="Každý odsek na nový riadok…"></textarea>
+            <div class="hint">Stačí písať obyčajný text – odseky sa vytvoria automaticky. Kto chce, môže použiť aj HTML.</div>
+          </div>
+          <div class="field">
+            <label for="post-body-en">Text (EN, voliteľné)</label>
+            <textarea id="post-body-en"></textarea>
+          </div>
+          <div class="field">
+            <label for="post-image">Fotka k príspevku (voliteľné)</label>
+            <input type="file" id="post-image" accept="image/*">
+          </div>
+          <button class="btn" type="submit">Uložiť príspevok</button>
+          <button class="btn secondary hidden" type="button" id="post-cancel">Zrušiť úpravu</button>
+        </form>
+      </div>
+      <div class="admin-card">
+        <h2>Existujúce príspevky</h2>
+        <div id="posts-list"></div>
+      </div>
+    </div>
+
+    <!-- GALLERY -->
+    <div id="tab-gallery" class="hidden">
+      <div class="admin-card">
+        <h2>Pridať fotky</h2>
+        <form id="gallery-form">
+          <div class="field">
+            <label for="gal-files">Fotky (môžeš vybrať viac naraz)</label>
+            <input type="file" id="gal-files" accept="image/*" multiple required>
+            <div class="hint">Fotky sa automaticky zmenšia na max. 1600 px pre rýchle načítanie.</div>
+          </div>
+          <div class="two-col">
+            <div class="field">
+              <label for="gal-caption">Popis (SK)</label>
+              <input type="text" id="gal-caption">
+            </div>
+            <div class="field">
+              <label for="gal-caption-en">Popis (EN, voliteľné)</label>
+              <input type="text" id="gal-caption-en">
+            </div>
+          </div>
+          <div class="field">
+            <label for="gal-date">Dátum</label>
+            <input type="date" id="gal-date" required>
+          </div>
+          <button class="btn" type="submit">Nahrať fotky</button>
+        </form>
+      </div>
+      <div class="admin-card">
+        <h2>Existujúce fotky</h2>
+        <div id="gallery-list"></div>
+      </div>
+    </div>
+
+    <!-- VLOGS -->
+    <div id="tab-vlogs" class="hidden">
+      <div class="admin-card">
+        <h2 id="vlog-form-title">Pridať vlog</h2>
+        <form id="vlog-form">
+          <input type="hidden" id="vlog-id">
+          <div class="field">
+            <label for="vlog-url">YouTube odkaz alebo ID videa</label>
+            <input type="text" id="vlog-url" placeholder="https://www.youtube.com/watch?v=…" required>
+            <div class="hint">Video najprv nahraj na YouTube (môže byť „Nezaradené/Unlisted“), potom sem vlož odkaz.</div>
+          </div>
+          <div class="two-col">
+            <div class="field">
+              <label for="vlog-title">Názov (SK)</label>
+              <input type="text" id="vlog-title" required>
+            </div>
+            <div class="field">
+              <label for="vlog-title-en">Názov (EN, voliteľné)</label>
+              <input type="text" id="vlog-title-en">
+            </div>
+          </div>
+          <div class="two-col">
+            <div class="field">
+              <label for="vlog-desc">Popis (SK)</label>
+              <input type="text" id="vlog-desc">
+            </div>
+            <div class="field">
+              <label for="vlog-desc-en">Popis (EN, voliteľné)</label>
+              <input type="text" id="vlog-desc-en">
+            </div>
+          </div>
+          <div class="field">
+            <label for="vlog-date">Dátum</label>
+            <input type="date" id="vlog-date" required>
+          </div>
+          <button class="btn" type="submit">Uložiť vlog</button>
+          <button class="btn secondary hidden" type="button" id="vlog-cancel">Zrušiť úpravu</button>
+        </form>
+      </div>
+      <div class="admin-card">
+        <h2>Existujúce vlogy</h2>
+        <div id="vlogs-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="js/firebase-config.js"></script>
+<script type="module">
+const $ = id => document.getElementById(id);
+const show = (id, on = true) => $(id).classList.toggle("hidden", !on);
+const toast = msg => {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(t._h);
+  t._h = setTimeout(() => t.classList.remove("show"), 3000);
+};
+const today = () => new Date().toISOString().slice(0, 10);
+
+if (!window.FIREBASE_CONFIG) {
+  show("not-configured");
+} else {
+  const [{ initializeApp },
+         { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut },
+         fs] = await Promise.all([
+    import("https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js"),
+    import("https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js"),
+    import("https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js"),
+  ]);
+  const { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc } = fs;
+
+  const app = initializeApp(window.FIREBASE_CONFIG);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  /* ---------- auth ---------- */
+  onAuthStateChanged(auth, user => {
+    show("login-box", !user);
+    show("admin-ui", !!user);
+    if (user) {
+      $("who-email").textContent = user.email;
+      if (window.ADMIN_EMAIL && user.email !== window.ADMIN_EMAIL) {
+        toast("Pozor: tento účet nemá právo zapisovať obsah.");
+      }
+      refreshAll();
+    }
+  });
+
+  $("login-form").addEventListener("submit", async e => {
+    e.preventDefault();
+    try {
+      await signInWithEmailAndPassword(auth, $("login-email").value, $("login-pass").value);
+    } catch (err) {
+      toast("Prihlásenie zlyhalo: " + (err.code || err.message));
+    }
+  });
+  $("logout-btn").addEventListener("click", () => signOut(auth));
+
+  /* ---------- tabs ---------- */
+  document.querySelectorAll(".tabs button").forEach(b => {
+    b.addEventListener("click", () => {
+      document.querySelectorAll(".tabs button").forEach(x => x.classList.toggle("active", x === b));
+      ["posts", "gallery", "vlogs"].forEach(t => show("tab-" + t, t === b.dataset.tab));
+    });
+  });
+
+  /* ---------- image compression (fits Firestore's 1MB doc limit) ---------- */
+  async function compressImage(file, maxDim = 1600, quality = 0.82) {
+    const img = await new Promise((res, rej) => {
+      const i = new Image();
+      i.onload = () => res(i);
+      i.onerror = rej;
+      i.src = URL.createObjectURL(file);
+    });
+    const canvas = document.createElement("canvas");
+    let { width, height } = img;
+    for (;;) {
+      const scale = Math.min(1, maxDim / Math.max(width, height));
+      canvas.width = Math.round(width * scale);
+      canvas.height = Math.round(height * scale);
+      canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+      const dataUrl = canvas.toDataURL("image/jpeg", quality);
+      if (dataUrl.length < 900_000 || maxDim < 500) {
+        URL.revokeObjectURL(img.src);
+        return dataUrl;
+      }
+      maxDim = Math.round(maxDim * 0.8);
+      quality = Math.max(0.6, quality - 0.06);
+    }
+  }
+
+  const textToHtml = t => {
+    t = (t || "").trim();
+    if (!t) return "";
+    if (t.includes("<")) return t;            // already HTML
+    return t.split(/\n\s*\n|\n/).map(p => `<p>${p.trim()}</p>`).join("\n");
+  };
+  const htmlToText = h => (h || "").replace(/<\/p>\s*<p>/g, "\n").replace(/<\/?p>/g, "").trim();
+
+  const parseYoutube = v => {
+    v = v.trim();
+    const m = v.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{6,})/);
+    return m ? m[1] : (/^[\w-]{6,}$/.test(v) ? v : null);
+  };
+
+  /* ---------- data lists ---------- */
+  const cache = { posts: [], gallery: [], vlogs: [] };
+
+  async function loadList(name) {
+    const snap = await getDocs(collection(db, name));
+    cache[name] = snap.docs.map(d => ({ _id: d.id, ...d.data() }))
+      .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+    return cache[name];
+  }
+
+  async function refreshAll() {
+    try {
+      await Promise.all([renderPostsList(), renderGalleryList(), renderVlogsList()]);
+    } catch (e) {
+      toast("Načítanie obsahu zlyhalo – je vytvorená Firestore databáza?");
+      console.warn(e);
+    }
+  }
+
+  function row({ img, title, date, onEdit, onDel }) {
+    const div = document.createElement("div");
+    div.className = "item-row";
+    div.innerHTML = `${img ? `<img src="${img}" alt="">` : ""}
+      <div class="grow"><div class="t"></div><div class="d">${date || ""}</div></div>
+      ${onEdit ? `<button class="ed" title="Upraviť"><span class="material-symbols-outlined">edit</span></button>` : ""}
+      <button class="del" title="Vymazať"><span class="material-symbols-outlined">delete</span></button>`;
+    div.querySelector(".t").textContent = title;
+    if (onEdit) div.querySelector(".ed").addEventListener("click", onEdit);
+    div.querySelector(".del").addEventListener("click", onDel);
+    return div;
+  }
+
+  const confirmDel = () => confirm("Naozaj vymazať? Táto akcia sa nedá vrátiť.");
+
+  /* ---------- posts ---------- */
+  async function renderPostsList() {
+    const list = await loadList("posts");
+    const box = $("posts-list");
+    box.innerHTML = list.length ? "" : "<p>Zatiaľ žiadne príspevky vo Firestore.</p>";
+    list.forEach(p => box.appendChild(row({
+      img: p.image, title: p.title, date: p.date,
+      onEdit: () => {
+        $("post-id").value = p._id;
+        $("post-title").value = p.title || "";
+        $("post-title-en").value = p.title_en || "";
+        $("post-date").value = p.date || today();
+        $("post-tags").value = (p.tags || []).join(", ");
+        $("post-body").value = htmlToText(p.body);
+        $("post-body-en").value = htmlToText(p.body_en);
+        $("post-form-title").textContent = "Upraviť príspevok";
+        show("post-cancel");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      },
+      onDel: async () => {
+        if (!confirmDel()) return;
+        await deleteDoc(doc(db, "posts", p._id));
+        toast("Príspevok vymazaný.");
+        renderPostsList();
+      },
+    })));
+  }
+
+  const resetPostForm = () => {
+    $("post-form").reset();
+    $("post-id").value = "";
+    $("post-date").value = today();
+    $("post-form-title").textContent = "Nový príspevok";
+    show("post-cancel", false);
+  };
+  $("post-cancel").addEventListener("click", resetPostForm);
+
+  $("post-form").addEventListener("submit", async e => {
+    e.preventDefault();
+    const data = {
+      title: $("post-title").value.trim(),
+      date: $("post-date").value,
+      tags: $("post-tags").value.split(",").map(s => s.trim()).filter(Boolean),
+      body: textToHtml($("post-body").value),
+    };
+    const tEn = $("post-title-en").value.trim();
+    const bEn = textToHtml($("post-body-en").value);
+    if (tEn) data.title_en = tEn;
+    if (bEn) data.body_en = bEn;
+    const file = $("post-image").files[0];
+    if (file) data.image = await compressImage(file);
+    try {
+      const id = $("post-id").value;
+      if (id) await updateDoc(doc(db, "posts", id), data);
+      else await addDoc(collection(db, "posts"), data);
+      toast(id ? "Príspevok upravený." : "Príspevok pridaný.");
+      resetPostForm();
+      renderPostsList();
+    } catch (err) {
+      toast("Uloženie zlyhalo: " + (err.code || err.message));
+    }
+  });
+
+  /* ---------- gallery ---------- */
+  async function renderGalleryList() {
+    const list = await loadList("gallery");
+    const box = $("gallery-list");
+    box.innerHTML = list.length ? "" : "<p>Zatiaľ žiadne fotky vo Firestore.</p>";
+    list.forEach(g => box.appendChild(row({
+      img: g.src, title: g.caption || "(bez popisu)", date: g.date,
+      onDel: async () => {
+        if (!confirmDel()) return;
+        await deleteDoc(doc(db, "gallery", g._id));
+        toast("Fotka vymazaná.");
+        renderGalleryList();
+      },
+    })));
+  }
+
+  $("gallery-form").addEventListener("submit", async e => {
+    e.preventDefault();
+    const files = [...$("gal-files").files];
+    if (!files.length) return;
+    toast(`Nahrávam ${files.length} fotiek…`);
+    try {
+      for (const f of files) {
+        const data = {
+          src: await compressImage(f),
+          caption: $("gal-caption").value.trim(),
+          date: $("gal-date").value,
+        };
+        const cEn = $("gal-caption-en").value.trim();
+        if (cEn) data.caption_en = cEn;
+        await addDoc(collection(db, "gallery"), data);
+      }
+      toast(`Hotovo – ${files.length} ${files.length === 1 ? "fotka pridaná" : "fotky pridané"}.`);
+      $("gallery-form").reset();
+      $("gal-date").value = today();
+      renderGalleryList();
+    } catch (err) {
+      toast("Nahrávanie zlyhalo: " + (err.code || err.message));
+    }
+  });
+
+  /* ---------- vlogs ---------- */
+  async function renderVlogsList() {
+    const list = await loadList("vlogs");
+    const box = $("vlogs-list");
+    box.innerHTML = list.length ? "" : "<p>Zatiaľ žiadne vlogy vo Firestore.</p>";
+    list.forEach(v => box.appendChild(row({
+      img: v.type === "youtube" ? `https://i.ytimg.com/vi/${v.id}/default.jpg` : null,
+      title: v.title, date: v.date,
+      onEdit: () => {
+        $("vlog-id").value = v._id;
+        $("vlog-url").value = v.id || "";
+        $("vlog-title").value = v.title || "";
+        $("vlog-title-en").value = v.title_en || "";
+        $("vlog-desc").value = v.description || "";
+        $("vlog-desc-en").value = v.description_en || "";
+        $("vlog-date").value = v.date || today();
+        $("vlog-form-title").textContent = "Upraviť vlog";
+        show("vlog-cancel");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      },
+      onDel: async () => {
+        if (!confirmDel()) return;
+        await deleteDoc(doc(db, "vlogs", v._id));
+        toast("Vlog vymazaný.");
+        renderVlogsList();
+      },
+    })));
+  }
+
+  const resetVlogForm = () => {
+    $("vlog-form").reset();
+    $("vlog-id").value = "";
+    $("vlog-date").value = today();
+    $("vlog-form-title").textContent = "Pridať vlog";
+    show("vlog-cancel", false);
+  };
+  $("vlog-cancel").addEventListener("click", resetVlogForm);
+
+  $("vlog-form").addEventListener("submit", async e => {
+    e.preventDefault();
+    const ytId = parseYoutube($("vlog-url").value);
+    if (!ytId) { toast("Neplatný YouTube odkaz alebo ID."); return; }
+    const data = {
+      type: "youtube",
+      id: ytId,
+      title: $("vlog-title").value.trim(),
+      description: $("vlog-desc").value.trim(),
+      date: $("vlog-date").value,
+    };
+    const tEn = $("vlog-title-en").value.trim();
+    const dEn = $("vlog-desc-en").value.trim();
+    if (tEn) data.title_en = tEn;
+    if (dEn) data.description_en = dEn;
+    try {
+      const id = $("vlog-id").value;
+      if (id) await updateDoc(doc(db, "vlogs", id), data);
+      else await addDoc(collection(db, "vlogs"), data);
+      toast(id ? "Vlog upravený." : "Vlog pridaný.");
+      resetVlogForm();
+      renderVlogsList();
+    } catch (err) {
+      toast("Uloženie zlyhalo: " + (err.code || err.message));
+    }
+  });
+
+  /* defaults */
+  $("post-date").value = today();
+  $("gal-date").value = today();
+  $("vlog-date").value = today();
+}
+</script>
+</body>
+</html>
