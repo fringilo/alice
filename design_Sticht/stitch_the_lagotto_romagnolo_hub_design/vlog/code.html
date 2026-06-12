@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lagotto Heritage - Vlog</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Work+Sans:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#ece0dc",
+                        "outline": "#827470",
+                        "background": "#faf9f8",
+                        "surface-container-high": "#e9e8e7",
+                        "inverse-primary": "#e7bdb1",
+                        "primary-container": "#5d4037",
+                        "on-tertiary-fixed": "#2b160f",
+                        "on-primary-fixed": "#2c160e",
+                        "outline-variant": "#d4c3be",
+                        "on-primary-container": "#d4ada1",
+                        "surface-bright": "#faf9f8",
+                        "inverse-surface": "#2f3130",
+                        "tertiary-fixed": "#ffdbce",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#e4beb2",
+                        "on-secondary-fixed": "#201a18",
+                        "on-secondary-container": "#6b6360",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "secondary": "#655d5a",
+                        "secondary-fixed-dim": "#cfc4c0",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#1a1c1c",
+                        "on-primary-fixed-variant": "#5d4037",
+                        "on-background": "#1a1c1c",
+                        "on-tertiary-container": "#d2aea1",
+                        "error": "#ba1a1a",
+                        "tertiary": "#432b22",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#e3e2e1",
+                        "primary-fixed-dim": "#e7bdb1",
+                        "surface-tint": "#77574d",
+                        "on-tertiary-fixed-variant": "#5b4137",
+                        "surface-container-highest": "#e3e2e1",
+                        "tertiary-container": "#5b4137",
+                        "on-surface-variant": "#504441",
+                        "inverse-on-surface": "#f1f0f0",
+                        "on-secondary": "#ffffff",
+                        "primary": "#442a22",
+                        "primary-fixed": "#ffdbd0",
+                        "surface-dim": "#dadad9",
+                        "secondary-fixed": "#ece0dc",
+                        "on-secondary-fixed-variant": "#4c4542",
+                        "surface": "#faf9f8",
+                        "surface-container": "#eeeeed",
+                        "surface-container-low": "#f4f3f2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "24px",
+                        "container-max": "1200px",
+                        "base": "8px",
+                        "sm": "12px",
+                        "lg": "48px",
+                        "gutter": "24px",
+                        "xs": "4px",
+                        "xl": "80px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Work Sans"],
+                        "label-sm": ["Work Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "label-sm": ["12px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .video-overlay-gradient {
+            background: linear-gradient(180deg, rgba(68, 42, 34, 0) 0%, rgba(68, 42, 34, 0.6) 100%);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-fixed selection:text-primary">
+<!-- TopAppBar Component -->
+<header class="w-full top-0 sticky z-40 bg-background shadow-[0px_4px_20px_rgba(93,64,55,0.08)]">
+<div class="flex items-center justify-between px-md py-sm max-w-container-max mx-auto">
+<div class="flex items-center gap-4">
+<button class="cursor-pointer active:scale-95 transition-transform text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tight">Lagotto Heritage</h1>
+</div>
+<!-- Desktop Nav Items -->
+<nav class="hidden md:flex items-center gap-lg">
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-label-md" href="#">Home</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-label-md" href="#">Breed Info</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-label-md" href="#">Blog</a>
+<a class="text-primary font-bold transition-colors duration-200 font-label-md" href="#">Vlog</a>
+</nav>
+<button class="cursor-pointer active:scale-95 transition-transform text-primary">
+<span class="material-symbols-outlined">search</span>
+</button>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-gutter py-md md:py-xl min-h-screen">
+<!-- Hero Section / Featured Vlog -->
+<section class="mb-xl">
+<div class="mb-md">
+<span class="font-label-sm uppercase tracking-widest text-secondary mb-2 block">Featured Adventure</span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-sm">Our Adventures: Coastal Trails</h2>
+</div>
+<div class="relative aspect-video w-full rounded-xl overflow-hidden shadow-[0px_4px_20px_rgba(93,64,55,0.08)] group cursor-pointer">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A cinematic, high-quality photograph of a curly-haired Lagotto Romagnolo dog running joyfully on a foggy, misty coastal beach. The lighting is soft and ethereal with cool blue tones and warm morning highlights on the dog's coat. The setting is organic and vast, reflecting the breed's heritage and adventurous spirit. Professional photography style with a shallow depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuARIQEq8Co02iUHzuFiDa5pXlsoWbfk7FlDUFOxrZCRaV_c5LyUIeBklrvdsAKNuvqfUTKYxweTU-V9PbH2X-4-J2fsbGYvpg_7AMKBMrg5rP7Z57l8aIlYXpMmlFbAKjwkzOlG8LJuNf4E9LCTJOqeAWSTysqsXDdbjwmnNWKSasN3mTSnwSHn4y1TmIAoTgqIS_TLv_VZOm4-K05TNEKSIeeibj6ZB6vMPgXulDtgW308qChyidyk0DfTFIvG-rKwhWOmgeOXRG8X"/>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+<div class="w-20 h-20 md:w-24 md:h-24 bg-primary/90 text-white rounded-full flex items-center justify-center shadow-2xl transition-transform duration-300 group-hover:scale-110 active:scale-90">
+<span class="material-symbols-outlined text-4xl md:text-5xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-md video-overlay-gradient">
+<div class="flex items-center justify-between text-white">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full border-2 border-white/50 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A portrait of a warm, smiling female breeder in her 40s wearing an earthy-toned linen shirt, standing in a soft-focus natural environment. The lighting is golden hour sun, creating a warm and professional yet approachable boutique aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5h3XstUf9KYuBDFLjnT_2mftIAghHMBFNeFfxpMwbCx3WpGu2FwEh_YaUeuyIIy5Ty87_zxnrJzvvtHx1DUuUWOE5CCj6yymwak5mbt2UJEV0uGdokLpwKcd5GgaSmj5T_j90luHrNNqSSYdUt_QgbxyC9qx8vhA40GJ9UjHjP-uIDKzomYh5yL1kHLO4aC9KpYnn5fgzR9Mv3eUV2qvESktYiKfY_LqRu9P-caLAoldrY_sAq_4GI68xYR3R1ymBIxeunlPSnEz6"/>
+</div>
+<div>
+<p class="font-label-md">Lagotto Heritage Team</p>
+<p class="text-xs opacity-80">12.4K Views • 2 days ago</p>
+</div>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined cursor-pointer hover:scale-110 transition-transform">share</span>
+<span class="material-symbols-outlined cursor-pointer hover:scale-110 transition-transform">bookmark</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Category Horizontal Scroll (Mobile only or small list) -->
+<section class="mb-lg overflow-hidden">
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-headline-md text-primary">Browse by Theme</h3>
+<button class="text-primary font-label-md flex items-center gap-1 hover:underline">
+                    View all <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="flex gap-md overflow-x-auto hide-scrollbar pb-4 -mx-4 px-4">
+<!-- Training Sessions -->
+<div class="flex-none w-72 md:w-80 group cursor-pointer">
+<div class="relative aspect-[4/3] rounded-xl overflow-hidden mb-sm shadow-sm transition-shadow hover:shadow-md">
+<img class="w-full h-full object-cover" data-alt="A professional dog training scene featuring a Lagotto Romagnolo sitting attentively in a lush green park. The dog is looking up at a trainer whose hands are partially visible holding a treat. The color palette is rich in earthy greens and browns, with bright, natural daylight highlighting the dog's curly texture. Minimalist and clean aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrUvZAV1dVat4-e_AFquTT7fN8hGSGTuguoFzoUfK6s2VhkTcApeTqFkVlPZXCrsGyRb_Rh9YsZd7coVCTo7hPAIhnxCYmT_j2J0Rsz6bYjIGrgaRybrYFJ3Qey3OCocQitzog4n9AV6d4pI598KlD47jefNvrqigUU3O2dy6HBqBfJUDlZDvkWrTvGhv_0rmryO29FwuyCXfFJ2eBYkm3uzzUgKdJNK-g_MUe2gRkHO1BPW68zWLbij7eRkpRZUuRZfr18_k6Vf_4"/>
+<div class="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors"></div>
+<span class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-2 py-1 rounded-sm font-label-sm">14:22</span>
+</div>
+<h4 class="font-label-md text-primary group-hover:text-tertiary transition-colors">Training Sessions: Precision &amp; Patience</h4>
+<p class="text-label-sm text-secondary">8 Videos • Mastery Series</p>
+</div>
+<!-- Truffle Hunting -->
+<div class="flex-none w-72 md:w-80 group cursor-pointer">
+<div class="relative aspect-[4/3] rounded-xl overflow-hidden mb-sm shadow-sm transition-shadow hover:shadow-md">
+<img class="w-full h-full object-cover" data-alt="A close-up, atmospheric shot of a Lagotto Romagnolo sniffing the damp, leaf-covered ground in an Italian forest during autumn. The lighting is dappled sunlight filtering through tall trees, creating a warm and earthy ambiance. The colors focus on deep ambers, forest greens, and truffle browns. Authentic heritage feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrPue9Bl3vV-vkQ7HXxRRa02JkBe5Rjj1iwtQfHQugGZZ0XjHNB28Gmx6KB3WzgpVU4Fw0tg-vozkX5HWXyfWPYaoHerNh7ebCHYi2y2OS9CV5hLarpjtVWs_82zJU1rllpZ8tOWJi4qSyB3mvSx-EVwxjQ56jorFImO6T7iCFkpPEWu3S7WYGJzU_N7pMHOQOYyOv9uoXOFzCbGqxx5ULH2LyUsmohetKh74Zqnq_nA4LI9kRO73jtWOuMGiqHlsFEpazKq_-EHNM"/>
+<div class="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors"></div>
+<span class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-2 py-1 rounded-sm font-label-sm">22:05</span>
+</div>
+<h4 class="font-label-md text-primary group-hover:text-tertiary transition-colors">Truffle Hunting: The Italian Tradition</h4>
+<p class="text-label-sm text-secondary">15 Videos • Field Work</p>
+</div>
+<!-- Care & Grooming -->
+<div class="flex-none w-72 md:w-80 group cursor-pointer">
+<div class="relative aspect-[4/3] rounded-xl overflow-hidden mb-sm shadow-sm transition-shadow hover:shadow-md">
+<img class="w-full h-full object-cover" data-alt="A bright and airy indoor grooming scene of a fluffy Lagotto Romagnolo. The room is modern and minimalist with light sandy beige walls and wood accents. Soft lighting emphasizes the cleanliness and health of the dog's coat. A sleek pair of grooming scissors is visible in the corner. Professional boutique aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpNqK5_w9rdgZv3IZvWrVjokRyUTBl_gGvIZxSZdVbgmoIIn_RehFHW09s6r831ibWfF1nhCLEsHFHbafEjsrI4SO2vtsJZQP66ijRdDzfO4rP41SH2SOCsg2Hy_AYvzerns2D25loiYcbxAl8UqCDVxN-ChQ5p_Ce1QoaNly45zW93F1gQCuo6x5bJu6vpScyvYqo-hAWqJnfNZJrFJolAnuoXWpvAS9NhnrPHJy3-SP3xv07egrVjkchzL5rCKEDXeVPRHq0sHB6"/>
+<div class="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors"></div>
+<span class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-2 py-1 rounded-sm font-label-sm">10:45</span>
+</div>
+<h4 class="font-label-md text-primary group-hover:text-tertiary transition-colors">Care &amp; Grooming: Maintaining the Curls</h4>
+<p class="text-label-sm text-secondary">5 Videos • Wellness Guides</p>
+</div>
+</div>
+</section>
+<!-- Recent Uploads Grid -->
+<section class="mb-xl">
+<h3 class="font-headline-md text-primary mb-md">Recent Uploads</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-md">
+<!-- Video Item 1 -->
+<div class="group cursor-pointer">
+<div class="relative aspect-video rounded-xl overflow-hidden mb-sm">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A playful Lagotto Romagnolo puppy in a bright backyard, jumping for a ball. The scene is full of energy and morning light. Crisp linen and truffle brown tones dominate the landscape." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1vL7utGn1QvlwSeaVjCoRQMWS0Fh_bxbfHm4SCpiMtTJHRkbJxFKeL2gaedh33yADugHinpsYoKaAKHH6DjNijmMemIJaBwnzuHTWrhgyYSCj6ORKCpErfQXQSYNaEOoW_3vNijP48nHZZhmF6bu5NIElal_83DW7LC34hKuf9VUZYREeFyCfSLscSA1c6pouQ489oLMFRQi0AKjUXEDskXd-S5cs-74e_UUJTlvJjBkpB_XcSLZ1KK38_oJmRLeDONAZaZoTN54Y"/>
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
+<span class="material-symbols-outlined text-white text-5xl">play_circle</span>
+</div>
+</div>
+<h5 class="font-label-md text-primary">First Socialization Walk</h5>
+<p class="text-label-sm text-secondary mt-1">1.2K views • 5 hours ago</p>
+</div>
+<!-- Video Item 2 -->
+<div class="group cursor-pointer">
+<div class="relative aspect-video rounded-xl overflow-hidden mb-sm">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A cozy indoor scene with a Lagotto Romagnolo resting on a premium sandy beige dog bed in a modern, minimalist living room. Soft fireplace lighting creates a warm and peaceful mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBA3L5lYrXR2BVck1c2Q-2bUsynurx0vEska-y0DFEXz2QPh--JUM-z1Mdx4q89uBrowrnQDLVV_UJ0c4d450YaOOWLGE_PUaMPApL_w2VQRnBZeAx9gbG3qqzQFtx1T4V4HgjoKFHk57I5JwpdA769iHTM5wR3POpixW9EEe3yDD5VV768xTOv93HwAh7wse4rS8D4_vLoN1FE8AwiQVhzXBYe2mxOK8Y16AD0xwBKkapdkPVHt7JE3BOIDvLeis16CxlXdhOFTSgl"/>
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
+<span class="material-symbols-outlined text-white text-5xl">play_circle</span>
+</div>
+</div>
+<h5 class="font-label-md text-primary">The Perfect Home Setup</h5>
+<p class="text-label-sm text-secondary mt-1">3.4K views • 1 day ago</p>
+</div>
+<!-- Video Item 3 -->
+<div class="group cursor-pointer">
+<div class="relative aspect-video rounded-xl overflow-hidden mb-sm">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A Lagotto Romagnolo in a field of tall grass during sunset. The golden light highlights its curly truffle-colored coat. The dog is looking toward the horizon, conveying wisdom and heritage." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLm54b-TrJhj7jKzO3zmr2DutWSCFiHG1oE7jxVu7PSP5XvU2CJku1NBwC4CEkgVbQf2SvblZCdw_ZcVGagZUCiAoo8lIZIlMXPhI7VsV7RsQ4e9L1QabntIlU5BZJhJ4fkvTam607YVYhLoxllKmGVYIEFrAwIPx9UBxOeHkBSyR1vKMiuWxwQHukCIR4TVVtJb1-83QJsQmRoBg0QSRgPF93_ZncZn-ag-WOBsPHQHjZSlHIVRHhrM9S7H6UgaMaPo-tef66SlOf"/>
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
+<span class="material-symbols-outlined text-white text-5xl">play_circle</span>
+</div>
+</div>
+<h5 class="font-label-md text-primary">Understanding Breed Traits</h5>
+<p class="text-label-sm text-secondary mt-1">8.9K views • 3 days ago</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Component -->
+<footer class="w-full py-xl bg-surface-container-high">
+<div class="max-w-container-max mx-auto px-gutter grid grid-cols-1 md:grid-cols-2 gap-md items-center">
+<div>
+<h4 class="font-headline-md text-headline-md text-primary mb-sm">Lagotto Romagnolo Heritage</h4>
+<p class="text-secondary font-body-md max-w-sm mb-md">Preserving the legacy and intelligence of the Italian Water Dog through authentic storytelling.</p>
+<div class="flex gap-md">
+<a class="text-secondary hover:text-primary transition-colors underline" href="#">Privacy Policy</a>
+<a class="text-secondary hover:text-primary transition-colors underline" href="#">Contact Us</a>
+<a class="text-secondary hover:text-primary transition-colors underline" href="#">Resources</a>
+</div>
+</div>
+<div class="md:text-right">
+<p class="text-secondary font-body-md">© 2024 Lagotto Romagnolo Heritage. All rights reserved.</p>
+<div class="mt-md flex md:justify-end gap-sm">
+<button class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center transition-transform active:scale-90">
+<span class="material-symbols-outlined text-sm">mail</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center transition-transform active:scale-90">
+<span class="material-symbols-outlined text-sm">share</span>
+</button>
+</div>
+</div>
+</div>
+</footer>
+<!-- BottomNavBar Component (Mobile Only) -->
+<nav class="fixed bottom-0 w-full z-50 md:hidden bg-surface-container-lowest border-t border-outline-variant shadow-[0px_-4px_20px_rgba(93,64,55,0.08)]">
+<div class="flex justify-around items-center h-16 w-full max-w-md mx-auto">
+<button class="flex flex-col items-center justify-center text-on-secondary-container px-4 py-1 hover:bg-secondary-container/30 transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-secondary-container px-4 py-1 hover:bg-secondary-container/30 transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">pets</span>
+<span class="font-label-sm text-label-sm">Breed</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-secondary-container px-4 py-1 hover:bg-secondary-container/30 transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-sm text-label-sm">Blog</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-2xl px-4 py-1 active:scale-90 duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">videocam</span>
+<span class="font-label-sm text-label-sm">Vlog</span>
+</button>
+</div>
+</nav>
+<!-- Floating Atmosphere Script (Subtle micro-interaction) -->
+<script>
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const { left, top, width, height } = card.getBoundingClientRect();
+                const x = (e.clientX - left) / width - 0.5;
+                const y = (e.clientY - top) / height - 0.5;
+                
+                const img = card.querySelector('img');
+                if (img) {
+                    img.style.transform = `scale(1.05) translate(${x * 10}px, ${y * 10}px)`;
+                }
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                const img = card.querySelector('img');
+                if (img) {
+                    img.style.transform = 'scale(1) translate(0, 0)';
+                }
+            });
+        });
+
+        // Simple active state simulation for nav
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('bg-background/95', 'backdrop-blur-sm');
+            } else {
+                header.classList.remove('bg-background/95', 'backdrop-blur-sm');
+            }
+        });
+    </script>
+</body></html>

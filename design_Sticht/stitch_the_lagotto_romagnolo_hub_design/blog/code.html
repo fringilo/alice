@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lagotto Heritage - Blog</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Work+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#ece0dc",
+                    "outline": "#827470",
+                    "background": "#faf9f8",
+                    "surface-container-high": "#e9e8e7",
+                    "inverse-primary": "#e7bdb1",
+                    "primary-container": "#5d4037",
+                    "on-tertiary-fixed": "#2b160f",
+                    "on-primary-fixed": "#2c160e",
+                    "outline-variant": "#d4c3be",
+                    "on-primary-container": "#d4ada1",
+                    "surface-bright": "#faf9f8",
+                    "inverse-surface": "#2f3130",
+                    "tertiary-fixed": "#ffdbce",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed-dim": "#e4beb2",
+                    "on-secondary-fixed": "#201a18",
+                    "on-secondary-container": "#6b6360",
+                    "on-primary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "secondary": "#655d5a",
+                    "secondary-fixed-dim": "#cfc4c0",
+                    "error-container": "#ffdad6",
+                    "on-surface": "#1a1c1c",
+                    "on-primary-fixed-variant": "#5d4037",
+                    "on-background": "#1a1c1c",
+                    "on-tertiary-container": "#d2aea1",
+                    "error": "#ba1a1a",
+                    "tertiary": "#432b22",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-variant": "#e3e2e1",
+                    "primary-fixed-dim": "#e7bdb1",
+                    "surface-tint": "#77574d",
+                    "on-tertiary-fixed-variant": "#5b4137",
+                    "surface-container-highest": "#e3e2e1",
+                    "tertiary-container": "#5b4137",
+                    "on-surface-variant": "#504441",
+                    "inverse-on-surface": "#f1f0f0",
+                    "on-secondary": "#ffffff",
+                    "primary": "#442a22",
+                    "primary-fixed": "#ffdbd0",
+                    "surface-dim": "#dadad9",
+                    "secondary-fixed": "#ece0dc",
+                    "on-secondary-fixed-variant": "#4c4542",
+                    "surface": "#faf9f8",
+                    "surface-container": "#eeeeed",
+                    "surface-container-low": "#f4f3f2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "md": "24px",
+                    "container-max": "1200px",
+                    "base": "8px",
+                    "sm": "12px",
+                    "lg": "48px",
+                    "gutter": "24px",
+                    "xs": "4px",
+                    "xl": "80px"
+            },
+            "fontFamily": {
+                    "body-md": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "label-md": ["Work Sans"],
+                    "label-sm": ["Work Sans"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #faf9f8;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .article-card:hover .article-image {
+            transform: scale(1.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #faf9f8;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d4c3be;
+            border-radius: 10px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-50 bg-background dark:bg-background shadow-[0px_4px_20px_rgba(93,64,55,0.08)]">
+<div class="flex items-center justify-between px-md py-sm max-w-container-max mx-auto">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined cursor-pointer active:scale-95 transition-transform text-primary dark:text-primary-fixed-dim" data-icon="menu">menu</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim tracking-tight">Lagotto Heritage</h1>
+</div>
+<div class="hidden md:flex gap-lg">
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors duration-200" href="#">Breed Info</a>
+<a class="text-primary font-bold font-body-md hover:text-primary transition-colors duration-200" href="#">Blog</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors duration-200" href="#">Vlog</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors duration-200" href="#">About Us</a>
+</div>
+<div class="flex items-center">
+<span class="material-symbols-outlined cursor-pointer active:scale-95 transition-transform text-primary dark:text-primary-fixed-dim" data-icon="search">search</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow max-w-container-max mx-auto px-gutter py-xl w-full">
+<!-- Blog Hero Section -->
+<section class="mb-xl">
+<div class="relative overflow-hidden rounded-[2rem] bg-secondary-container h-[400px] md:h-[500px] group flex items-end">
+<div class="absolute inset-0 z-0">
+<img alt="Featured Lagotto Article" class="w-full h-full object-cover article-image transition-transform duration-700 ease-out" data-alt="A professional high-resolution photograph of a curly-haired Lagotto Romagnolo dog standing majestically in a sun-drenched Italian forest. The lighting is warm and golden, filtering through the dense green leaves to create a dreamy, atmospheric dappled effect. The overall aesthetic is organic and heritage-focused, with rich earthy browns and soft textures that evoke a sense of professional warmth and breed authenticity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZB5RskJfI81EZDxvR2jnKs19hMpBgF54evQbZXaRAl8-uLdkRRcEgDUYwIXOw0VqoBmtWWsMjIGDaI1EcQonkkPq2mQfLPEYVLgrriJDS6rHJu9qkRf4jY1u1rrqZjlnTKx2auwsJXNbwUdIyi1YHkI8lhD8_7j6NRrGJBi6kyCTqmMTARxNsKnAlOVtK0UcaH6BPPfSthzUejMqmAYW5zxDLMQWWJ2c_tYQbwTeetFlM0zBt0wb-Xb6K42bTIjqaVfrBRISEfmej"/>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
+<div class="relative z-20 p-lg w-full md:w-2/3">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-md py-xs rounded-full font-label-sm text-label-sm mb-md inline-block">Featured Guide</span>
+<h2 class="font-display-lg text-display-lg text-white mb-md">Mastering the Art of Truffle Hunting</h2>
+<p class="font-body-lg text-body-lg text-white/90 mb-lg">Discover the historical techniques and modern training methods that turn your Lagotto into a world-class truffle seeker.</p>
+<button class="bg-primary text-on-primary px-lg py-md rounded-full font-label-md text-label-md active:scale-95 transition-transform">Read Full Article</button>
+</div>
+</div>
+</section>
+<!-- Category Filter -->
+<div class="flex flex-wrap gap-sm mb-lg overflow-x-auto pb-base custom-scrollbar">
+<button class="bg-primary-container text-on-primary-container px-md py-sm rounded-full font-label-md text-label-md">All Articles</button>
+<button class="bg-secondary-container/50 text-on-secondary-container px-md py-sm rounded-full font-label-md text-label-md hover:bg-secondary-container transition-colors">Training Tips</button>
+<button class="bg-secondary-container/50 text-on-secondary-container px-md py-sm rounded-full font-label-md text-label-md hover:bg-secondary-container transition-colors">Truffle Hunting</button>
+<button class="bg-secondary-container/50 text-on-secondary-container px-md py-sm rounded-full font-label-md text-label-md hover:bg-secondary-container transition-colors">Health &amp; Grooming</button>
+<button class="bg-secondary-container/50 text-on-secondary-container px-md py-sm rounded-full font-label-md text-label-md hover:bg-secondary-container transition-colors">Breed History</button>
+</div>
+<!-- Blog Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+<!-- Article Card 1 -->
+<article class="article-card flex flex-col group cursor-pointer">
+<div class="overflow-hidden rounded-xl bg-surface-container-low h-64 mb-md">
+<img alt="Training Tips" class="article-image w-full h-full object-cover transition-transform duration-500 ease-in-out" data-alt="A close-up, high-detail photograph of a young Lagotto Romagnolo puppy looking attentively at its owner during a training session. The background is a soft-focus, minimalist backyard with warm sandy beige tones and organic textures. The lighting is bright and even, emphasizing the soft curls of the puppy's coat and creating a sense of trust and intelligent companionship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzlkHbJsmD8_8qBbFY3A5bGZZkoN7ZwaKhZ3Rv1Sne1mMsKJbLRmIA9ap8fvOKXMq3r-2UX-XErg1oW0cQbBM08zSH-cSYitegj2pdfv-kE_WAfxytoLN2XmuDyK9puLt0gMgeXzLOoeTgEBbGAsxF_vh4naVyO4PnxrMhzz3GcA0czHd_ILmU1TnvKSKZeGlljq6ApWvY3N3YHAa3ZpW2AbYT-EETCI7Q-CxB0Ms2w0puOJbBORA-Nnq8oBZc_BGg5kAfvXe6A8Wd"/>
+</div>
+<div class="flex flex-col gap-xs">
+<div class="flex items-center gap-xs text-secondary mb-xs">
+<span class="font-label-sm text-label-sm">May 15, 2024</span>
+<span class="w-1 h-1 bg-outline rounded-full"></span>
+<span class="font-label-sm text-label-sm">Training Tips</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary group-hover:text-tertiary transition-colors">Socializing Your Lagotto Puppy</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Learn the critical steps to ensuring your curly-coated companion grows up to be a confident and well-adjusted adult dog.</p>
+</div>
+</article>
+<!-- Article Card 2 -->
+<article class="article-card flex flex-col group cursor-pointer">
+<div class="overflow-hidden rounded-xl bg-surface-container-low h-64 mb-md">
+<img alt="Best Truffle Hunting Spots" class="article-image w-full h-full object-cover transition-transform duration-500 ease-in-out" data-alt="An artistic, wide-angle landscape photograph of the rolling hills in Romagna, Italy, during a misty autumn morning. The scene is filled with earthy tones of terracotta, sage green, and deep browns, creating a heritage-boutique feel. The lighting is diffused and ethereal, highlighting the natural beauty of the region where Lagottos have hunted truffles for centuries." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqJHMOwsznVRUtQ7tGqadgyDmFMZ940fPm_XU8Tl1fXiicIB5Z8X0HeJ4h3LlWQwvIRzwV005TjZYsjz4p8iqbOD-uZBSi3MDMwTF1VRaYPhkjNnwxNpnEUdJyO0fP0HkF5ZyhWCF8cq_vIurrATD530EBwBmRXshX5Z4tPMayTaRwGQK4pleaD_xFjoUINz5zwYVTRYrE494lWucBtDrItF-quda7aIpFXPbaZEysAT30CRXzZyzlOB2ukVvKZkciEAjBfk2xA-NG"/>
+</div>
+<div class="flex flex-col gap-xs">
+<div class="flex items-center gap-xs text-secondary mb-xs">
+<span class="font-label-sm text-label-sm">May 12, 2024</span>
+<span class="w-1 h-1 bg-outline rounded-full"></span>
+<span class="font-label-sm text-label-sm">Truffle Hunting</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary group-hover:text-tertiary transition-colors">Best Truffle Hunting Spots in Romagna</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">A curated guide to the most fertile grounds in the heart of Italy for amateur and professional truffle hunters alike.</p>
+</div>
+</article>
+<!-- Article Card 3 -->
+<article class="article-card flex flex-col group cursor-pointer">
+<div class="overflow-hidden rounded-xl bg-surface-container-low h-64 mb-md">
+<img alt="Health and Grooming" class="article-image w-full h-full object-cover transition-transform duration-500 ease-in-out" data-alt="A bright, clean, and professional image of dog grooming tools laid out on a sandy beige linen surface. The kit includes specialized scissors and brushes designed for the unique woolly coat of a Lagotto Romagnolo. The lighting is high-key and modern, emphasizing the premium quality and meticulous care required for this heritage breed's maintenance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-OBrWCN8mrczAhK5t_Oc5iJsce99eqaFwCn7Ekozh_uPpTn9rfWr1EcG3qNYDyZns4VsdrycyEv1tTnOHGfdCiJ1TeCmJUfB2-fMphKVMEdGkuuYZcuW_0OcMHIBNydqiYTCQ3fzs8jHcbslleYnBau5_L_eIrUKZHRqFebgZqeV8V1yBf4UeSQxmS3oEkkHp011VZ4KkuOqFaS93rKPkAtD1c_TedzkVYIFeJMmeL5NBCl9qEdDIW3TibAf_VaUGqdw1oFWSkrhb"/>
+</div>
+<div class="flex flex-col gap-xs">
+<div class="flex items-center gap-xs text-secondary mb-xs">
+<span class="font-label-sm text-label-sm">May 08, 2024</span>
+<span class="w-1 h-1 bg-outline rounded-full"></span>
+<span class="font-label-sm text-label-sm">Grooming</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary group-hover:text-tertiary transition-colors">The Curly Coat Care Guide</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">How to maintain the iconic woolly texture without matting, using the right tools and natural products.</p>
+</div>
+</article>
+<!-- Article Card 4 -->
+<article class="article-card flex flex-col group cursor-pointer">
+<div class="overflow-hidden rounded-xl bg-surface-container-low h-64 mb-md">
+<img alt="Nutrition" class="article-image w-full h-full object-cover transition-transform duration-500 ease-in-out" data-alt="A gourmet, minimalist food photograph showing organic, raw ingredients like fresh salmon, kale, and sweet potatoes arranged on a rustic wooden table. The lighting is warm and natural, creating a sense of boutique quality and health-conscious nutrition. The composition is clean and modern, perfectly reflecting a high-quality diet for active working dogs." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBssjBGkBBUU4nNGCorGt3gFTn2t4bTMlbHa-4eebIKbZHL0p9gx_6US6Fx8dZaOYWoc4F1Zw0AOuZ8HKpWtoAan97UNevf9cdW4M0OuI7dfdJ4BWo_3nV_-oSoX0n_K8ZiKSizYwPCdtPaCbiUHmv-2Sz_VzhNQlECSfsnvG87k6lRwZFAMSjo--rXcWduPNtSZcYKfWft-FFPW9lIbu8_tKV_8CPbwlQf1WEoI93yfPj-bV2sX-J9wjhTRq1m-2D8CxcAw86X6Aqb"/>
+</div>
+<div class="flex flex-col gap-xs">
+<div class="flex items-center gap-xs text-secondary mb-xs">
+<span class="font-label-sm text-label-sm">May 05, 2024</span>
+<span class="w-1 h-1 bg-outline rounded-full"></span>
+<span class="font-label-sm text-label-sm">Nutrition</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary group-hover:text-tertiary transition-colors">Diet for an Active Working Breed</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Understanding the unique metabolic needs of the Lagotto to maintain peak performance and a healthy coat.</p>
+</div>
+</article>
+<!-- Article Card 5 -->
+<article class="article-card flex flex-col group cursor-pointer">
+<div class="overflow-hidden rounded-xl bg-surface-container-low h-64 mb-md">
+<img alt="History" class="article-image w-full h-full object-cover transition-transform duration-500 ease-in-out" data-alt="A vintage-style, sepia-toned archival photograph or illustration depicting an ancient scene of Lagotto Romagnolo dogs assisting hunters in the marshlands of Italy. The atmosphere is nostalgic and historical, using a palette of faded browns and creams. The image highlights the breed's deep historical roots and transition from water retrievers to truffle hunters." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALwAS7LG33cvtlr4SFBp3V2vRvKBljvOIP-sABsiL8S8Z6-QMn1xTvlyxDqvwNGTeH74PQiqGSlJX3AlOUSJwF5uw9SPXOFC9ZD33U9kr2W1QYHd3TCJjf10FSPpC10m_jDqtgZEdz9zHVzFJBES23N4yQ7RW5xycu5sWgFM2OulOmS43KnxEUCOaYwod7U3G69__zURIgLyUHmFUPIU3oO1vdmgO0TP210bCYlWgCNHvamlX1sx4514lasCxEB1mGyaz9JkuEozUL"/>
+</div>
+<div class="flex flex-col gap-xs">
+<div class="flex items-center gap-xs text-secondary mb-xs">
+<span class="font-label-sm text-label-sm">Apr 28, 2024</span>
+<span class="w-1 h-1 bg-outline rounded-full"></span>
+<span class="font-label-sm text-label-sm">History</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary group-hover:text-tertiary transition-colors">From Water Dog to Truffle Hunter</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">A deep dive into the fascinating 500-year evolution of the breed and its specialized working roles.</p>
+</div>
+</article>
+<!-- Article Card 6 -->
+<article class="article-card flex flex-col group cursor-pointer">
+<div class="overflow-hidden rounded-xl bg-surface-container-low h-64 mb-md">
+<img alt="Lifestyle" class="article-image w-full h-full object-cover transition-transform duration-500 ease-in-out" data-alt="A bright and airy lifestyle photograph of a Lagotto Romagnolo sitting comfortably in a modern, minimalist living room with large windows and light wood floors. The mood is serene and tranquil, with soft neutral tones and abundant natural light. The image captures the affectionate and adaptable nature of the breed as a perfect family companion in a contemporary home." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgb2sTQZTnpUmx8DvVB1JSSi3PrHsaVoXC-q4KJtXDIeEOu5TvHxejq8GKi6Ti_0BVLniUMuSmdM_yS-8oo7ro7FREL-56mH64HBpPEVvre4Z79PtljSU8gRevUV62Sfa30VCY_ueB1hwyK-vI0bjhrjO9TKjTT2hBSuyEL7M_n5q6qB33LEzHqkN_IeehCLh0RjLUZpHzrOP1q8mpMtnNpw-lxHDqnJIktyH8YWYYkufl0Rx4idNYIxfMmPuaaSJg40za1t9ypoTw"/>
+</div>
+<div class="flex flex-col gap-xs">
+<div class="flex items-center gap-xs text-secondary mb-xs">
+<span class="font-label-sm text-label-sm">Apr 22, 2024</span>
+<span class="w-1 h-1 bg-outline rounded-full"></span>
+<span class="font-label-sm text-label-sm">Lifestyle</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary group-hover:text-tertiary transition-colors">Living with the Intelligent Curly</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">The daily joys and challenges of owning a dog that's smarter than your average toddler.</p>
+</div>
+</article>
+</div>
+<!-- Pagination -->
+<div class="flex justify-center mt-xl gap-md">
+<button class="w-12 h-12 flex items-center justify-center rounded-full border border-outline-variant text-primary hover:bg-secondary-container transition-all">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<div class="flex gap-sm">
+<button class="w-12 h-12 flex items-center justify-center rounded-full bg-primary text-on-primary font-label-md">1</button>
+<button class="w-12 h-12 flex items-center justify-center rounded-full border border-outline-variant text-primary font-label-md hover:bg-secondary-container transition-all">2</button>
+<button class="w-12 h-12 flex items-center justify-center rounded-full border border-outline-variant text-primary font-label-md hover:bg-secondary-container transition-all">3</button>
+</div>
+<button class="w-12 h-12 flex items-center justify-center rounded-full border border-outline-variant text-primary hover:bg-secondary-container transition-all">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-xl mt-xl bg-surface-container-high dark:bg-surface-container-highest">
+<div class="max-w-container-max mx-auto px-gutter grid grid-cols-1 md:grid-cols-2 gap-md items-center">
+<div class="flex flex-col gap-sm">
+<div class="font-headline-md text-headline-md text-primary font-bold">Lagotto Heritage</div>
+<p class="text-secondary font-body-md max-w-sm">Preserving the legacy and intelligence of Italy's finest truffle dog. Join our community for expert advice and breed history.</p>
+<div class="font-body-md text-secondary mt-md">© 2024 Lagotto Romagnolo Heritage. All rights reserved.</div>
+</div>
+<div class="flex flex-col md:items-end gap-md">
+<div class="flex gap-lg">
+<a class="text-secondary hover:text-primary underline transition-all font-body-md" href="#">Privacy Policy</a>
+<a class="text-secondary hover:text-primary underline transition-all font-body-md" href="#">Contact Us</a>
+<a class="text-secondary hover:text-primary underline transition-all font-body-md" href="#">Resources</a>
+</div>
+<div class="flex gap-md">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-on-primary-container text-[20px]" data-icon="share">share</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-on-primary-container text-[20px]" data-icon="mail">mail</span>
+</div>
+</div>
+</div>
+</div>
+</footer>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 md:hidden bg-surface-container-lowest dark:bg-surface-dim border-t border-outline-variant shadow-[0px_-4px_20px_rgba(93,64,55,0.08)]">
+<div class="flex justify-around items-center h-16 w-full max-w-md mx-auto">
+<a class="flex flex-col items-center justify-center text-on-secondary-container px-4 py-1 hover:bg-secondary-container/30 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-secondary-container px-4 py-1 hover:bg-secondary-container/30 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="pets">pets</span>
+<span class="font-label-sm text-label-sm">Breed</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-2xl px-4 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+<span class="font-label-sm text-label-sm">Blog</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-secondary-container px-4 py-1 hover:bg-secondary-container/30 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="videocam">videocam</span>
+<span class="font-label-sm text-label-sm">Vlog</span>
+</a>
+</div>
+</nav>
+<script>
+        // Simple scroll behavior for the top bar
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-md');
+            } else {
+                header.classList.remove('shadow-md');
+            }
+        });
+    </script>
+</body></html>

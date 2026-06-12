@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Denník – Lagotto Romagnolo</title>
+  <meta name="description" content="Denník života s Lagotto Romagnolo – výlety, tréningy, hľadanie húb a hľuzoviek.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="index.html">Lagotto <span>Romagnolo</span></a>
+    <nav class="site-nav">
+      <a href="index.html">Domov</a>
+      <a href="plemeno.html">O plemene</a>
+      <a href="blog.html" class="active">Denník</a>
+      <a href="galeria.html">Galéria</a>
+      <a href="vlogy.html">Vlogy</a>
+      <a href="en/blog.html" class="lang" title="English version">EN</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container page-head">
+  <span class="chip">Náš príbeh</span>
+  <h1>Denník</h1>
+  <p class="lead">Zápisky zo života s naším Lagottom – výlety, tréningy, objavy a každodenné radosti.</p>
+</div>
+
+<section class="block">
+  <div class="container">
+    <div id="posts"></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div>
+      <div class="foot-brand">🐾 Lagotto Romagnolo</div>
+      <div>Denník &amp; sprievodca plemenom</div>
+    </div>
+    <div>Obsah sprievodcu vychádza z FCI štandardu č. 298</div>
+  </div>
+</footer>
+
+<nav class="bottom-nav">
+  <div class="inner">
+    <a href="index.html"><span class="material-symbols-outlined">home</span><span>Domov</span></a>
+    <a href="plemeno.html"><span class="material-symbols-outlined">pets</span><span>Plemeno</span></a>
+    <a href="blog.html" class="active"><span class="material-symbols-outlined">menu_book</span><span>Denník</span></a>
+    <a href="galeria.html"><span class="material-symbols-outlined">photo_library</span><span>Galéria</span></a>
+    <a href="vlogy.html"><span class="material-symbols-outlined">videocam</span><span>Vlogy</span></a>
+  </div>
+</nav>
+
+<script src="js/data/posts.js"></script>
+<script src="js/main.js"></script>
+<script>renderPosts("posts");</script>
+</body>
+</html>

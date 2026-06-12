@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vlogs – Lagotto Romagnolo</title>
+  <meta name="description" content="Video diary – a Lagotto Romagnolo training, swimming and hunting truffles.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="index.html">Lagotto <span>Romagnolo</span></a>
+    <nav class="site-nav">
+      <a href="index.html">Home</a>
+      <a href="breed.html">The Breed</a>
+      <a href="blog.html">Diary</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="vlogs.html" class="active">Vlogs</a>
+      <a href="../vlogy.html" class="lang" title="Slovenská verzia">SK</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container page-head">
+  <span class="chip">Video diary</span>
+  <h1>Vlogs</h1>
+  <p class="lead">Video diary – training, swimming, trips and bits of ordinary days.</p>
+</div>
+
+<section class="block">
+  <div class="container">
+    <div class="video-grid" id="vlogs"></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div>
+      <div class="foot-brand">🐾 Lagotto Romagnolo</div>
+      <div>Diary &amp; breed guide</div>
+    </div>
+    <div>The guide content is based on FCI Standard No. 298</div>
+  </div>
+</footer>
+
+<nav class="bottom-nav">
+  <div class="inner">
+    <a href="index.html"><span class="material-symbols-outlined">home</span><span>Home</span></a>
+    <a href="breed.html"><span class="material-symbols-outlined">pets</span><span>Breed</span></a>
+    <a href="blog.html"><span class="material-symbols-outlined">menu_book</span><span>Diary</span></a>
+    <a href="gallery.html"><span class="material-symbols-outlined">photo_library</span><span>Gallery</span></a>
+    <a href="vlogs.html" class="active"><span class="material-symbols-outlined">videocam</span><span>Vlogs</span></a>
+  </div>
+</nav>
+
+<script>window.SITE_LANG = "en"; window.ASSET_BASE = "../";</script>
+<script src="../js/data/vlogs.js"></script>
+<script src="../js/main.js"></script>
+<script>renderVlogs("vlogs");</script>
+</body>
+</html>
