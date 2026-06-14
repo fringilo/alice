@@ -114,11 +114,10 @@ code {
   padding-top: 14px; padding-bottom: 14px;
 }
 .brand {
-  font-family: var(--font-display);
-  font-size: 1.4rem; font-weight: 700; letter-spacing: -0.02em;
-  color: var(--primary); text-decoration: none;
+  display: inline-flex; align-items: center; text-decoration: none;
 }
-.brand span { color: var(--surface-tint); }
+.brand img { height: 36px; width: auto; display: block; }
+@media (max-width: 560px) { .brand img { height: 30px; } }
 .site-nav { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 .site-nav a {
   font-family: var(--font-label);
@@ -573,6 +572,7 @@ section.block.alt .timeline li::before { border-color: var(--surface-container-l
   font-weight: 700; font-size: 1.05rem; color: var(--primary);
   letter-spacing: -0.01em;
 }
+.site-footer .foot-brand img { height: 28px; width: auto; display: block; margin-bottom: 6px; }
 
 /* ===== Bottom nav (mobile) ===== */
 .bottom-nav {
