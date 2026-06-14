@@ -29,9 +29,9 @@
 </header>
 
 <div class="container page-head">
-  <span class="chip">Náš príbeh</span>
-  <h1>Denník</h1>
-  <p class="lead">Zápisky zo života s naším Lagottom – výlety, tréningy, objavy a každodenné radosti.</p>
+  <span class="chip" data-edit="blog.head.chip">Náš príbeh</span>
+  <h1 data-edit="blog.head.title">Denník</h1>
+  <p class="lead" data-edit="blog.head.lead">Zápisky zo života s naším Lagottom – výlety, tréningy, objavy a každodenné radosti.</p>
 </div>
 
 <section class="block">
@@ -64,6 +64,7 @@
 <script src="js/data/posts.js"></script>
 <script src="js/main.js"></script>
 <script src="js/cms.js"></script>
+<script src="js/sitetext.js"></script>
 <script>
   renderPosts("posts");
   document.addEventListener("cms-ready", () => renderPosts("posts"));

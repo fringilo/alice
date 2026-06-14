@@ -29,9 +29,9 @@
 </header>
 
 <div class="container page-head">
-  <span class="chip">Video diary</span>
-  <h1>Vlogs</h1>
-  <p class="lead">Video diary – training, swimming, trips and bits of ordinary days.</p>
+  <span class="chip" data-edit="vlogs.head.chip">Video diary</span>
+  <h1 data-edit="vlogs.head.title">Vlogs</h1>
+  <p class="lead" data-edit="vlogs.head.lead">Video diary – training, swimming, trips and bits of ordinary days.</p>
 </div>
 
 <section class="block">
@@ -65,6 +65,7 @@
 <script src="../js/data/vlogs.js"></script>
 <script src="../js/main.js"></script>
 <script src="../js/cms.js"></script>
+<script src="../js/sitetext.js"></script>
 <script>
   renderVlogs("vlogs");
   document.addEventListener("cms-ready", () => renderVlogs("vlogs"));

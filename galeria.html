@@ -29,9 +29,9 @@
 </header>
 
 <div class="container page-head">
-  <span class="chip">Momenty</span>
-  <h1>Galéria</h1>
-  <p class="lead">Kliknutím na fotku ju zväčšíte. Listovať môžete šípkami na klávesnici.</p>
+  <span class="chip" data-edit="gallery.head.chip">Momenty</span>
+  <h1 data-edit="gallery.head.title">Galéria</h1>
+  <p class="lead" data-edit="gallery.head.lead">Kliknutím na fotku ju zväčšíte. Listovať môžete šípkami na klávesnici.</p>
 </div>
 
 <section class="block">
@@ -64,6 +64,7 @@
 <script src="js/data/gallery.js"></script>
 <script src="js/main.js"></script>
 <script src="js/cms.js"></script>
+<script src="js/sitetext.js"></script>
 <script>
   renderGallery("gallery");
   document.addEventListener("cms-ready", () => renderGallery("gallery"));

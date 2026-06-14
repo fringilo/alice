@@ -53,6 +53,17 @@ Setup (one-time):
 The public pages merge Firestore content with the static seeds in `js/data/` and
 work unchanged when Firebase is not configured.
 
+### Editing the static page text (inline)
+
+Headings, intros and the hero text are editable directly on the page. Log in at
+`admin.html`, then open any normal page — a **"Upraviť stránku"** button appears
+at the bottom right (only for the admin). Toggle it on, click any text, edit it
+in the popup, Save. Edits are stored in the Firestore collection `siteText`
+(one document per text, fields `sk` / `en`) and shown to all visitors. You edit
+each language on its own page (SK pages save Slovak, the `/en/` pages save
+English). Any element to make editable carries a `data-edit="key"` attribute in
+the HTML; `js/sitetext.js` applies overrides and provides the editor.
+
 ## Adding content via files (no Firebase needed)
 
 All content lives in three data files under `js/data/`. Each file starts with

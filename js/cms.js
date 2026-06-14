@@ -6,11 +6,13 @@
 (async () => {
   if (!window.FIREBASE_CONFIG) return;
   try {
-    const [{ initializeApp }, { getFirestore, collection, getDocs }] = await Promise.all([
+    const [{ initializeApp, getApp }, { getFirestore, collection, getDocs }] = await Promise.all([
       import("https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js"),
       import("https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js"),
     ]);
-    const app = initializeApp(window.FIREBASE_CONFIG);
+    let app;
+    try { app = initializeApp(window.FIREBASE_CONFIG); }
+    catch { app = getApp(); }            // app už mohol inicializovať sitetext.js
     const db = getFirestore(app);
 
     const load = async (name) => {
