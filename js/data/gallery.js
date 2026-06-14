@@ -1,33 +1,13 @@
 // ============================================================
-//  FOTOGALÉRIA – tu pridávaš fotky. / PHOTO GALLERY – add photos here.
+//  FOTOGALÉRIA – záložný (statický) zoznam fotiek.
 //
-//  1. Skopíruj fotku do priečinka  assets/gallery/
-//     (Copy the photo into assets/gallery/)
-//  2. Pridaj záznam na začiatok zoznamu (add an entry at the top):
+//  Galéria sa teraz spravuje cez admin rozhranie (admin.html):
+//  pridávanie, mazanie aj albumy. Tento zoznam je prázdny – všetky
+//  fotky sú uložené vo Firebase a dajú sa odtiaľ mazať.
 //
-//  { src: "assets/gallery/nazov.jpg", caption: "Popis",
-//    caption_en: "Caption", date: "2026-06-12" },
-//
-//  caption_en je voliteľné / caption_en is optional.
+//  (Ak by si chcel pevne „zabudované“ fotky aj bez Firebase, môžeš
+//  sem pridať záznamy v tvare:
+//   { src: "assets/gallery/nazov.jpg", caption: "Popis", date: "2026-06-12" } )
 // ============================================================
 
-window.LAGOTTO_GALLERY = [
-  {
-    src: "assets/gallery/les-hladanie.jpg",
-    caption: "Pri práci – nos pri zemi, jesenný les",
-    caption_en: "At work – nose to the ground, autumn forest",
-    date: "2026-06-12"
-  },
-  {
-    src: "assets/gallery/jesenne-listie.jpg",
-    caption: "Hľadanie v jesennom lístí",
-    caption_en: "Searching in the autumn leaves",
-    date: "2026-06-12"
-  },
-  {
-    src: "assets/gallery/kucery-portret.jpg",
-    caption: "Slávne kučery zblízka",
-    caption_en: "The famous curls up close",
-    date: "2026-06-12"
-  }
-];
+window.LAGOTTO_GALLERY = [];

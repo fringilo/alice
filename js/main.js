@@ -62,30 +62,89 @@ let lbIndex = 0;
 function renderGallery(targetId) {
   const target = document.getElementById(targetId);
   if (!target) return;
-  lbItems = (window.LAGOTTO_GALLERY || []).slice()
-    .sort((a, b) => (b.date || "").localeCompare(a.date || ""))
-    .map(g => ({ src: asset(g.src), caption: pick(g, "caption") || "" }));
 
-  if (!lbItems.length) {
+  const all = (window.LAGOTTO_GALLERY || []).slice();
+  const byDate = (a, b) => (b.date || "").localeCompare(a.date || "");
+  const albums = all.filter(x => x.kind === "album").sort(byDate);
+  const photos = all.filter(x => x.kind !== "album").sort(byDate);
+
+  if (!albums.length && !photos.length) {
     target.innerHTML = `<div class="empty-state">
       <h3>${tr("Galéria je zatiaľ prázdna", "The gallery is empty for now")}</h3>
-      <p>${tr("Fotky pridáš do priečinka", "Add photos to the folder")}
-      <code>assets/gallery/</code> ${tr("a zoznamu v", "and to the list in")}
-      <code>js/data/gallery.js</code>.</p>
+      <p>${tr("Fotky a albumy pridáš po prihlásení v",
+              "Add photos and albums after logging in at")}
+      <a href="${BASE()}admin.html">admin</a>.</p>
     </div>`;
     return;
   }
 
-  target.innerHTML = lbItems.map((g, i) => `
+  const figHtml = (g, i) => `
     <figure data-index="${i}">
-      <img src="${g.src}" alt="${g.caption}" loading="lazy">
-      <figcaption>${g.caption}</figcaption>
-    </figure>
-  `).join("");
+      <img src="${asset(g.src)}" alt="${pick(g, "caption") || ""}" loading="lazy">
+      <figcaption>${pick(g, "caption") || ""}</figcaption>
+    </figure>`;
 
-  target.querySelectorAll("figure").forEach(fig => {
-    fig.addEventListener("click", () => openLightbox(Number(fig.dataset.index)));
+  const wirePhotos = (list) => {
+    lbItems = list.map(g => ({ src: asset(g.src), caption: pick(g, "caption") || "" }));
+    target.querySelectorAll("figure[data-index]").forEach(fig => {
+      fig.addEventListener("click", () => openLightbox(Number(fig.dataset.index)));
+    });
+  };
+
+  /* --- inside one album --- */
+  const m = location.hash.match(/album=([^&]+)/);
+  const album = m ? albums.find(a => a._id === decodeURIComponent(m[1])) : null;
+  if (album) {
+    const inside = photos.filter(p => p.albumId === album._id);
+    target.innerHTML = `
+      <div class="gallery-bar">
+        <a class="gallery-back" href="#">${tr("← Späť na galériu", "← Back to gallery")}</a>
+        <h2 class="album-heading">${pick(album, "title") || ""}</h2>
+      </div>
+      <div class="gallery-grid">${inside.map(figHtml).join("") ||
+        `<p>${tr("Tento album je zatiaľ prázdny.", "This album is empty for now.")}</p>`}</div>`;
+    target.querySelector(".gallery-back").addEventListener("click", (e) => {
+      e.preventDefault(); location.hash = "";
+    });
+    wirePhotos(inside);
+    return;
+  }
+
+  /* --- top level: folders + loose photos --- */
+  let html = "";
+  if (albums.length) {
+    html += `<div class="gallery-grid">` + albums.map(a => {
+      const cover = photos.find(p => p.albumId === a._id);
+      const count = photos.filter(p => p.albumId === a._id).length;
+      return `<figure class="album-card" data-album="${a._id}">
+        <div class="album-thumb">
+          ${cover ? `<img src="${asset(cover.src)}" alt="" loading="lazy">`
+                  : `<span class="album-empty material-symbols-outlined">folder</span>`}
+          <span class="album-badge"><span class="material-symbols-outlined">folder</span></span>
+        </div>
+        <figcaption>
+          <span class="album-name">${pick(a, "title") || ""}</span>
+          <span class="album-count">${count} ${tr("fotiek", "photos")}</span>
+        </figcaption>
+      </figure>`;
+    }).join("") + `</div>`;
+  }
+
+  const loose = photos.filter(p => !p.albumId || !albums.some(a => a._id === p.albumId));
+  if (loose.length) {
+    if (albums.length) {
+      html += `<h2 class="section-title" style="margin-top:36px">${tr("Ostatné fotky", "Other photos")}</h2>`;
+    }
+    html += `<div class="gallery-grid">${loose.map(figHtml).join("")}</div>`;
+  }
+
+  target.innerHTML = html;
+  target.querySelectorAll(".album-card").forEach(card => {
+    card.addEventListener("click", () => {
+      location.hash = "album=" + encodeURIComponent(card.dataset.album);
+    });
   });
+  wirePhotos(loose);
 }
 
 function ensureLightbox() {

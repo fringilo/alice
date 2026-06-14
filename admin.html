@@ -25,7 +25,7 @@
       font-weight: 600; color: var(--on-surface-variant); margin-bottom: 4px;
     }
     .field input[type=text], .field input[type=email], .field input[type=password],
-    .field input[type=date], .field input[type=url], .field textarea {
+    .field input[type=date], .field input[type=url], .field textarea, .field select {
       width: 100%; padding: 11px 14px;
       background: var(--surface-container-low);
       border: 1px solid var(--outline-variant); border-radius: var(--r-sm);
@@ -62,6 +62,13 @@
     }
     .item-row button:hover { color: var(--primary); border-color: var(--primary); }
     .item-row button.del:hover { color: #ba1a1a; border-color: #ba1a1a; }
+    .item-row .row-album {
+      flex-shrink: 0; max-width: 150px; padding: 7px 10px;
+      border: 1px solid var(--outline-variant); border-radius: var(--r-sm);
+      background: var(--surface-container-low); color: var(--on-surface);
+      font-family: var(--font-display); font-size: .82rem;
+    }
+    @media (max-width: 560px) { .item-row .row-album { max-width: 110px; } }
     #toast {
       position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
       background: var(--primary); color: #fff; padding: 12px 26px;
@@ -182,12 +189,33 @@
     <!-- GALLERY -->
     <div id="tab-gallery" class="hidden">
       <div class="admin-card">
+        <h2>Albumy (priečinky)</h2>
+        <form id="album-form">
+          <div class="two-col">
+            <div class="field">
+              <label for="album-title">Názov albumu (SK)</label>
+              <input type="text" id="album-title" required placeholder="napr. Leto 2026">
+            </div>
+            <div class="field">
+              <label for="album-title-en">Názov (EN, voliteľné)</label>
+              <input type="text" id="album-title-en">
+            </div>
+          </div>
+          <button class="btn" type="submit">Vytvoriť album</button>
+        </form>
+        <div id="albums-list" style="margin-top:18px"></div>
+      </div>
+      <div class="admin-card">
         <h2>Pridať fotky</h2>
         <form id="gallery-form">
           <div class="field">
             <label for="gal-files">Fotky (môžeš vybrať viac naraz)</label>
             <input type="file" id="gal-files" accept="image/*" multiple required>
             <div class="hint">Fotky sa automaticky zmenšia na max. 1600 px pre rýchle načítanie.</div>
+          </div>
+          <div class="field">
+            <label for="gal-album">Album</label>
+            <select id="gal-album"><option value="">— bez albumu —</option></select>
           </div>
           <div class="two-col">
             <div class="field">
@@ -457,26 +485,118 @@ if (!window.FIREBASE_CONFIG) {
     }
   });
 
-  /* ---------- gallery ---------- */
+  /* ---------- gallery + albums ---------- */
+  const galAlbums = () => (cache.gallery || []).filter(x => x.kind === "album")
+    .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+  const galPhotos = () => (cache.gallery || []).filter(x => x.kind !== "album")
+    .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+
   async function renderGalleryList() {
-    const list = await loadList("gallery");
+    await loadList("gallery");
+    const albums = galAlbums();
+    const photos = galPhotos();
+    renderAlbumsList(albums, photos);
+    populateAlbumSelect($("gal-album"), albums);
+
     const box = $("gallery-list");
-    box.innerHTML = list.length ? "" : "<p>Zatiaľ žiadne fotky vo Firestore.</p>";
-    list.forEach(g => box.appendChild(row({
-      img: g.src, title: g.caption || "(bez popisu)", date: g.date,
-      onDel: async () => {
+    box.innerHTML = "";
+    if (!photos.length) { box.innerHTML = "<p>Zatiaľ žiadne fotky vo Firestore.</p>"; return; }
+
+    photos.forEach(g => {
+      const div = document.createElement("div");
+      div.className = "item-row";
+      div.innerHTML = `
+        <img src="${g.src}" alt="">
+        <div class="grow">
+          <div class="t"></div>
+          <div class="d">${g.date || ""}</div>
+        </div>
+        <select class="row-album"></select>
+        <button class="del" title="Vymazať"><span class="material-symbols-outlined">delete</span></button>`;
+      div.querySelector(".t").textContent = g.caption || "(bez popisu)";
+      const sel = div.querySelector(".row-album");
+      populateAlbumSelect(sel, albums, g.albumId || "");
+      sel.addEventListener("change", async () => {
+        try {
+          await updateDoc(doc(db, "gallery", g._id), { albumId: sel.value || null });
+          g.albumId = sel.value || null;
+          toast(sel.value ? "Fotka presunutá do albumu." : "Fotka mimo albumu.");
+          renderAlbumsList(galAlbums(), galPhotos());
+        } catch (err) { toast("Presun zlyhal: " + (err.code || err.message)); }
+      });
+      div.querySelector(".del").addEventListener("click", async () => {
         if (!confirmDel()) return;
         await deleteDoc(doc(db, "gallery", g._id));
         toast("Fotka vymazaná.");
         renderGalleryList();
-      },
-    })));
+      });
+      box.appendChild(div);
+    });
   }
+
+  function populateAlbumSelect(sel, albums, selectedId = "") {
+    if (!sel) return;
+    sel.innerHTML = `<option value="">— bez albumu —</option>` +
+      albums.map(a => `<option value="${a._id}">${(a.title || "(album)").replace(/</g, "&lt;")}</option>`).join("");
+    sel.value = selectedId;
+  }
+
+  function renderAlbumsList(albums, photos) {
+    const box = $("albums-list");
+    if (!albums.length) { box.innerHTML = "<p>Zatiaľ žiadne albumy.</p>"; return; }
+    box.innerHTML = "";
+    albums.forEach(a => {
+      const count = photos.filter(p => p.albumId === a._id).length;
+      const div = document.createElement("div");
+      div.className = "item-row";
+      div.innerHTML = `
+        <span class="material-symbols-outlined" style="color:var(--surface-tint)">folder</span>
+        <div class="grow"><div class="t"></div><div class="d">${count} fotiek</div></div>
+        <button class="ed" title="Premenovať"><span class="material-symbols-outlined">edit</span></button>
+        <button class="del" title="Vymazať album"><span class="material-symbols-outlined">delete</span></button>`;
+      div.querySelector(".t").textContent = a.title || "(album)";
+      div.querySelector(".ed").addEventListener("click", async () => {
+        const sk = prompt("Názov albumu (SK):", a.title || "");
+        if (sk === null) return;
+        const en = prompt("Názov (EN, nepovinné):", a.title_en || "");
+        try {
+          await updateDoc(doc(db, "gallery", a._id), { title: sk.trim(), title_en: (en || "").trim() });
+          toast("Album premenovaný.");
+          renderGalleryList();
+        } catch (err) { toast("Premenovanie zlyhalo: " + (err.code || err.message)); }
+      });
+      div.querySelector(".del").addEventListener("click", async () => {
+        if (!confirm(`Vymazať album „${a.title}“? Fotky zostanú, len sa z albumu vyberú.`)) return;
+        try {
+          const inside = photos.filter(p => p.albumId === a._id);
+          for (const p of inside) await updateDoc(doc(db, "gallery", p._id), { albumId: null });
+          await deleteDoc(doc(db, "gallery", a._id));
+          toast("Album vymazaný.");
+          renderGalleryList();
+        } catch (err) { toast("Mazanie zlyhalo: " + (err.code || err.message)); }
+      });
+      box.appendChild(div);
+    });
+  }
+
+  $("album-form").addEventListener("submit", async e => {
+    e.preventDefault();
+    const data = { kind: "album", title: $("album-title").value.trim(), date: today() };
+    const en = $("album-title-en").value.trim();
+    if (en) data.title_en = en;
+    try {
+      await addDoc(collection(db, "gallery"), data);
+      toast("Album vytvorený.");
+      $("album-form").reset();
+      renderGalleryList();
+    } catch (err) { toast("Vytvorenie zlyhalo: " + (err.code || err.message)); }
+  });
 
   $("gallery-form").addEventListener("submit", async e => {
     e.preventDefault();
     const files = [...$("gal-files").files];
     if (!files.length) return;
+    const albumId = $("gal-album").value || null;
     toast(`Nahrávam ${files.length} fotiek…`);
     try {
       for (const f of files) {
@@ -484,6 +604,7 @@ if (!window.FIREBASE_CONFIG) {
           src: await compressImage(f),
           caption: $("gal-caption").value.trim(),
           date: $("gal-date").value,
+          albumId,
         };
         const cEn = $("gal-caption-en").value.trim();
         if (cEn) data.caption_en = cEn;

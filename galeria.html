@@ -68,6 +68,7 @@
 <script>
   renderGallery("gallery");
   document.addEventListener("cms-ready", () => renderGallery("gallery"));
+  window.addEventListener("hashchange", () => renderGallery("gallery"));
 </script>
 </body>
 </html>

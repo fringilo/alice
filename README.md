@@ -41,6 +41,14 @@ no file editing needed. Content is stored in **Firestore**; photos are compresse
 in the browser (max 1600 px JPEG) and stored inline, so the free Spark plan is
 enough. Videos are added as YouTube links.
 
+The gallery is fully managed from admin (the static `js/data/gallery.js` seed is
+empty). You can group photos into **albums (folders)**: create an album, then
+assign photos to it on upload or via the dropdown on each photo row. The public
+gallery shows albums as folder cards you click into; photos with no album appear
+under "Other photos". Albums are stored as documents in the same `gallery`
+collection (`kind: "album"`), so no extra security rule is needed; deleting an
+album keeps its photos (they just become un-grouped).
+
 Setup (one-time):
 1. In the [Firebase console](https://console.firebase.google.com) create a
    **Web app** and copy its config into `js/firebase-config.js`.
