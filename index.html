@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lagotto Romagnolo – Taliansky kráľ hľuzoviek</title>
-  <meta name="description" content="Stránka o plemene Lagotto Romagnolo – sprievodca plemenom, denník, fotogaléria a vlogy.">
+  <title>Gioia – Lagotto Romagnolo | LaGioiatto</title>
+  <meta name="description" content="Gioia, naša Lagotto Romagnolo – denník, fotogaléria, vlogy a sprievodca plemenom talianskeho kráľa hľuzoviek.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
@@ -23,48 +23,54 @@
       <a href="blog.html">Denník</a>
       <a href="galeria.html">Galéria</a>
       <a href="vlogy.html">Vlogy</a>
+      <a class="social" href="https://www.instagram.com/la_gioia_tto/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg>
+      </a>
       <a href="en/index.html" class="lang" title="English version">EN</a>
     </nav>
   </div>
 </header>
 
-<div class="hero" style="background-image: url('assets/img/hero.jpg')">
-  <div class="container">
-    <div class="hero-card">
-      <h1 data-edit="home.hero.title">Nadčasová inteligencia zabalená v kučerách</h1>
-      <p data-edit="home.hero.text">Jediné plemeno na svete, ktoré je anatomicky a inštinktívne špecializované
-      výhradne na hľadanie hľuzoviek. Vitajte na stránke venovanej plemenu
-      Lagotto Romagnolo – a nášmu životu s ním.</p>
-      <div class="hero-actions">
-        <a class="btn" href="plemeno.html"><span data-edit="home.hero.btn1">Spoznajte plemeno</span></a>
-        <a class="btn secondary" href="plemeno.html#historia"><span data-edit="home.hero.btn2">História</span></a>
-      </div>
+<!-- Hero: full-bleed photo of Gioia -->
+<div class="hero-full">
+  <img class="hero-img" src="assets/img/hero.jpg" alt="Gioia – Lagotto Romagnolo">
+  <div class="hero-overlay"></div>
+  <div class="hero-content container">
+    <p class="hero-kicker" data-edit="home.hero2.kicker">Lagotto Romagnolo</p>
+    <h1 data-edit="home.hero2.name">Gioia</h1>
+    <p class="hero-lead" data-edit="home.hero2.text">Naša malá kučeravá radosť. Jediné plemeno na svete
+    špecializované na hľadanie hľuzoviek – a náš každodenný spoločník.</p>
+    <div class="hero-actions">
+      <a class="btn light" href="galeria.html"><span data-edit="home.hero2.btn1">Fotogaléria</span></a>
+      <a class="text-link light" href="plemeno.html"><span data-edit="home.hero2.btn2">Spoznajte plemeno</span> →</a>
     </div>
   </div>
 </div>
 
+<!-- Brief breed intro -->
 <section class="block center">
   <div class="container">
     <span class="section-kicker" data-edit="home.welcome.kicker">Benvenuti</span>
     <h2 class="section-title" data-edit="home.welcome.title">Dedičstvo lásky a práce</h2>
     <p class="section-sub" data-edit="home.welcome.text">Lagotto Romagnolo je viac než domáci miláčik – je to stáročné
     dedičstvo talianskeho remesla. Od močiarov Comacchia po lesy Romagne boli títo
-    inteligentní spoločníci našimi vernými partnermi pri hľadaní najvzácnejších
+    inteligentní spoločníci vernými partnermi pri hľadaní najvzácnejších
     hľuzoviek sveta.</p>
-    <div class="grid cols-4" style="text-align:left">
-      <div class="card stat">
+    <a class="text-link" href="plemeno.html"><span data-edit="home.welcome.cta">Celý sprievodca plemenom</span> →</a>
+    <div class="stats-row">
+      <div>
         <div class="value" data-edit="home.stat1.value">Taliansko</div>
         <div class="label" data-edit="home.stat1.label">Pôvod – oblasť Romagna, delta rieky Pád</div>
       </div>
-      <div class="card stat">
+      <div>
         <div class="value" data-edit="home.stat2.value">43–48 cm</div>
         <div class="label" data-edit="home.stat2.label">Výška v kohútiku (psy), suky 41–46 cm</div>
       </div>
-      <div class="card stat">
+      <div>
         <div class="value" data-edit="home.stat3.value">13–16 kg</div>
         <div class="label" data-edit="home.stat3.label">Hmotnosť psov, suky 11–14 kg</div>
       </div>
-      <div class="card stat">
+      <div>
         <div class="value" data-edit="home.stat4.value">13–16 rokov</div>
         <div class="label" data-edit="home.stat4.label">Priemerná dĺžka života</div>
       </div>
@@ -72,64 +78,36 @@
   </div>
 </section>
 
-<section class="block alt">
+<!-- Latest video -->
+<section class="block alt center">
   <div class="container">
-    <div class="media-split">
-      <img src="assets/img/profile.jpg" alt="Lagotto Romagnolo hľadá v jesennom lístí">
-      <div>
-        <h2 class="section-title" data-edit="home.about.title">Pes, ktorý myslí nosom</h2>
-        <p class="section-sub" style="margin-bottom:16px" data-edit="home.about.p1">Lagotto Romagnolo bol pôvodne
-        vodný aportér z močiarov Romagne. Po vysušení močiarov v 19. storočí sa
-        premenil na špecialistu na hľuzovky – a túto prácu má dodnes zapísanú
-        v génoch aj v štandarde.</p>
-        <p class="section-sub" data-edit="home.about.p2">Je to vysoko inteligentný, energický pracovný pes
-        s potlačeným loveckým pudom a hlbokým putom k svojej rodine.</p>
-        <a class="btn" href="plemeno.html"><span data-edit="home.about.cta">Celý sprievodca plemenom</span>
-          <span class="material-symbols-outlined">arrow_forward</span></a>
-      </div>
-    </div>
+    <h2 class="section-title" data-edit="home.video.title">Najnovšie video</h2>
+    <p class="section-sub" data-edit="home.video.sub">Momenty s Gioiou vo videu</p>
+    <div class="video-feature" id="latest-vlog"></div>
+    <p style="margin-top:24px"><a class="text-link" href="vlogy.html"><span data-edit="home.video.cta">Všetky vlogy</span> →</a></p>
   </div>
 </section>
 
+<!-- Latest diary posts -->
 <section class="block">
   <div class="container">
     <h2 class="section-title" data-edit="home.diary.title">Najnovšie z denníka</h2>
-    <p class="section-sub" data-edit="home.diary.sub">Zážitky, tréningy a každodenný život s Lagottom</p>
+    <p class="section-sub" data-edit="home.diary.sub">Zážitky, tréningy a každodenný život s Gioiou</p>
     <div id="latest-posts"></div>
-    <a class="btn secondary" href="blog.html"><span data-edit="home.diary.cta">Všetky príspevky</span>
-      <span class="material-symbols-outlined">arrow_forward</span></a>
+    <a class="text-link" href="blog.html"><span data-edit="home.diary.cta">Všetky príspevky</span> →</a>
   </div>
 </section>
 
-<section class="block alt">
+<!-- Photo strip -->
+<section class="block alt center">
   <div class="container">
-    <div class="bento">
-      <a class="card span-6" href="plemeno.html" style="text-decoration:none">
-        <div>
-          <div class="icon"><span class="material-symbols-outlined">pets</span></div>
-          <h3 data-edit="home.bento.breed.title">O plemene</h3>
-          <p data-edit="home.bento.breed.text">Štandard, povaha a starostlivosť pre náročného majiteľa – história,
-          FCI štandard 298, srsť, výcvik na hľuzovky, zdravie a genetika.</p>
-        </div>
-        <span class="more"><span data-edit="home.bento.breed.more">Čítať viac</span> <span class="material-symbols-outlined">arrow_forward</span></span>
-      </a>
-      <a class="card tonal span-3" href="galeria.html" style="text-decoration:none">
-        <div>
-          <div class="icon"><span class="material-symbols-outlined">photo_library</span></div>
-          <h3 data-edit="home.bento.gallery.title">Galéria</h3>
-          <p data-edit="home.bento.gallery.text">Fotografie z výletov, lesov, tréningov aj domácich naháňačiek.</p>
-        </div>
-        <span class="more"><span data-edit="home.bento.gallery.more">Prezrieť</span> <span class="material-symbols-outlined">arrow_forward</span></span>
-      </a>
-      <a class="card inverse span-3" href="vlogy.html" style="text-decoration:none">
-        <div>
-          <div class="icon"><span class="material-symbols-outlined">videocam</span></div>
-          <h3 data-edit="home.bento.vlogs.title">Vlogy</h3>
-          <p data-edit="home.bento.vlogs.text">Videodenník – hľadanie húb, nosework, plávanie a kúsky z bežných dní.</p>
-        </div>
-        <span class="more"><span data-edit="home.bento.vlogs.more">Pozrieť</span> <span class="material-symbols-outlined">arrow_forward</span></span>
-      </a>
+    <h2 class="section-title" data-edit="home.photos.title">Z galérie</h2>
+    <div class="photo-strip">
+      <img src="assets/gallery/kucery-portret.jpg" alt="Gioia – portrét" loading="lazy">
+      <img src="assets/gallery/les-hladanie.jpg" alt="Gioia hľadá v lese" loading="lazy">
+      <img src="assets/gallery/jesenne-listie.jpg" alt="Gioia v jesennom lístí" loading="lazy">
     </div>
+    <p style="margin-top:24px"><a class="text-link" href="galeria.html"><span data-edit="home.photos.cta">Celá galéria</span> →</a></p>
   </div>
 </section>
 
@@ -137,9 +115,14 @@
   <div class="container">
     <div>
       <div class="foot-brand"><img src="assets/img/logo.png" alt="LaGioiatto"></div>
-      <div>Denník &amp; sprievodca plemenom</div>
+      <div>Gioia · denník &amp; sprievodca plemenom</div>
     </div>
-    <div>Obsah sprievodcu vychádza z FCI štandardu č. 298 · <a href="admin.html">Admin</a></div>
+    <div class="social-links">
+      <a href="https://www.instagram.com/la_gioia_tto/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg>
+      </a>
+    </div>
+    <div>FCI štandard č. 298 · <a href="admin.html">Admin</a></div>
   </div>
 </footer>
 
@@ -155,12 +138,17 @@
 
 <script src="js/firebase-config.js"></script>
 <script src="js/data/posts.js"></script>
+<script src="js/data/vlogs.js"></script>
 <script src="js/main.js"></script>
 <script src="js/cms.js"></script>
 <script src="js/sitetext.js"></script>
 <script>
   renderPosts("latest-posts", 2);
-  document.addEventListener("cms-ready", () => renderPosts("latest-posts", 2));
+  renderVlogs("latest-vlog", 1);
+  document.addEventListener("cms-ready", () => {
+    renderPosts("latest-posts", 2);
+    renderVlogs("latest-vlog", 1);
+  });
 </script>
 </body>
 </html>

@@ -191,11 +191,12 @@ function stepLightbox(dir) {
 }
 
 /* ---------- Vlogs ---------- */
-function renderVlogs(targetId) {
+function renderVlogs(targetId, limit) {
   const target = document.getElementById(targetId);
   if (!target) return;
-  const vlogs = (window.LAGOTTO_VLOGS || []).slice()
+  let vlogs = (window.LAGOTTO_VLOGS || []).slice()
     .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+  if (limit) vlogs = vlogs.slice(0, limit);
 
   if (!vlogs.length) {
     target.innerHTML = `<div class="empty-state">
