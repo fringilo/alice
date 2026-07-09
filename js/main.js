@@ -200,11 +200,9 @@ function renderVlogs(targetId, limit) {
 
   if (!vlogs.length) {
     target.innerHTML = `<div class="empty-state">
-      <h3>${tr("Zatiaľ žiadne vlogy", "No vlogs yet")}</h3>
-      <p>${tr("Prvé video pridáš v súbore", "Add your first video in")}
-      <code>js/data/vlogs.js</code> –
-      ${tr("stačí YouTube ID alebo video súbor v",
-           "just a YouTube ID or a video file in")} <code>assets/video/</code>.</p>
+      <h3>${tr("Prvé video už čoskoro", "First video coming soon")}</h3>
+      <p>${tr("Zatiaľ nás sledujte na", "In the meantime, follow us on")}
+      <a href="https://www.instagram.com/la_gioia_tto/" target="_blank" rel="noopener">${tr("Instagrame", "Instagram")}</a>.</p>
     </div>`;
     return;
   }
