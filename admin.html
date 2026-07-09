@@ -135,6 +135,7 @@
       <button data-tab="posts" class="active">📝 Príspevky</button>
       <button data-tab="gallery">📷 Fotky</button>
       <button data-tab="vlogs">🎬 Vlogy</button>
+      <button data-tab="comments">💬 Komentáre</button>
     </div>
 
     <!-- POSTS -->
@@ -292,6 +293,16 @@
         <div id="vlogs-list"></div>
       </div>
     </div>
+
+    <!-- COMMENTS -->
+    <div id="tab-comments" class="hidden">
+      <div class="admin-card">
+        <h2>Komentáre</h2>
+        <p class="hint" style="font-size:.85rem;color:var(--secondary)">Nové komentáre sa na webe
+        zobrazia až po schválení (✓). Vymazané komentáre sa nedajú obnoviť.</p>
+        <div id="comments-list"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -353,7 +364,7 @@ if (!window.FIREBASE_CONFIG) {
   document.querySelectorAll(".tabs button").forEach(b => {
     b.addEventListener("click", () => {
       document.querySelectorAll(".tabs button").forEach(x => x.classList.toggle("active", x === b));
-      ["posts", "gallery", "vlogs"].forEach(t => show("tab-" + t, t === b.dataset.tab));
+      ["posts", "gallery", "vlogs", "comments"].forEach(t => show("tab-" + t, t === b.dataset.tab));
     });
   });
 
@@ -397,7 +408,7 @@ if (!window.FIREBASE_CONFIG) {
   };
 
   /* ---------- data lists ---------- */
-  const cache = { posts: [], gallery: [], vlogs: [], postImages: [] };
+  const cache = { posts: [], gallery: [], vlogs: [], postImages: [], comments: [] };
 
   async function loadList(name) {
     const snap = await getDocs(collection(db, name));
@@ -408,7 +419,8 @@ if (!window.FIREBASE_CONFIG) {
 
   async function refreshAll() {
     try {
-      await Promise.all([renderPostsList(), renderGalleryList(), renderVlogsList()]);
+      await renderPostsList();
+      await Promise.all([renderGalleryList(), renderVlogsList(), renderCommentsList()]);
     } catch (e) {
       toast("Načítanie obsahu zlyhalo – je vytvorená Firestore databáza?");
       console.warn(e);
@@ -698,6 +710,43 @@ if (!window.FIREBASE_CONFIG) {
         renderVlogsList();
       },
     })));
+  }
+
+  /* ---------- comments moderation ---------- */
+  async function renderCommentsList() {
+    const list = await loadList("comments");
+    const box = $("comments-list");
+    box.innerHTML = list.length ? "" : "<p>Zatiaľ žiadne komentáre.</p>";
+    list.forEach(c => {
+      const post = (cache.posts || []).find(p => p._id === c.postId);
+      const div = document.createElement("div");
+      div.className = "item-row";
+      div.innerHTML = `
+        <div class="grow">
+          <div class="t"></div>
+          <div class="d">${(c.date || "").slice(0, 10)}
+            · ${post ? post.title : "(neznámy príspevok)"}
+            · ${c.approved ? "✅ schválený" : "🕓 čaká na schválenie"}</div>
+        </div>
+        ${c.approved ? "" : `<button class="ok" title="Schváliť"><span class="material-symbols-outlined">check</span></button>`}
+        <button class="del" title="Vymazať"><span class="material-symbols-outlined">delete</span></button>`;
+      div.querySelector(".t").textContent = `${c.name}: ${c.text}`;
+      const ok = div.querySelector(".ok");
+      if (ok) ok.addEventListener("click", async () => {
+        try {
+          await updateDoc(doc(db, "comments", c._id), { approved: true });
+          toast("Komentár schválený.");
+          renderCommentsList();
+        } catch (err) { toast("Schválenie zlyhalo: " + (err.code || err.message)); }
+      });
+      div.querySelector(".del").addEventListener("click", async () => {
+        if (!confirmDel()) return;
+        await deleteDoc(doc(db, "comments", c._id));
+        toast("Komentár vymazaný.");
+        renderCommentsList();
+      });
+      box.appendChild(div);
+    });
   }
 
   const resetVlogForm = () => {

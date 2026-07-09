@@ -508,6 +508,42 @@ section.block.alt .timeline li::before { border-color: var(--surface-container-l
 .post-body { color: var(--on-surface-variant); }
 .post-body p { margin: 0 0 12px; }
 
+/* views counter in post meta */
+.post-views {
+  display: inline-flex; align-items: center; gap: 4px;
+  color: var(--secondary); font-size: .85rem;
+}
+.post-views .material-symbols-outlined { font-size: 17px; }
+
+/* comments */
+.post-comments {
+  margin-top: var(--sp-md);
+  padding-top: var(--sp-md);
+  border-top: 1px solid var(--hairline);
+}
+.post-comments h3 { font-size: 1.05rem; margin: 0 0 14px; }
+.comment { margin-bottom: 14px; }
+.comment-head {
+  display: flex; align-items: baseline; gap: 10px;
+  font-size: .9rem;
+}
+.comment-head strong { color: var(--on-background); }
+.comment-head span { color: var(--secondary); font-size: .78rem; }
+.comment p { margin: 2px 0 0; font-size: .95rem; color: var(--on-surface-variant); }
+.no-comments { color: var(--secondary); font-size: .9rem; }
+.comment-form { margin-top: 16px; display: grid; gap: 10px; max-width: 480px; }
+.comment-form input, .comment-form textarea {
+  width: 100%; padding: 11px 14px;
+  background: var(--surface-container-low);
+  border: 1px solid var(--outline-variant); border-radius: var(--r-sm);
+  font-family: var(--font-display); font-size: .95rem; color: var(--on-surface);
+  outline: none; transition: border-color .2s;
+}
+.comment-form input:focus, .comment-form textarea:focus { border-color: var(--primary); }
+.comment-form textarea { min-height: 90px; resize: vertical; }
+.comment-form button { justify-self: start; }
+.comment-thanks { color: var(--primary); font-weight: 500; font-size: .95rem; }
+
 /* ===== Gallery ===== */
 .gallery-grid {
   display: grid;

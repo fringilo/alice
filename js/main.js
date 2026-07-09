@@ -73,17 +73,29 @@ function renderPosts(targetId, limit) {
       ? `<button class="listen-btn" type="button" data-post="${idx}">
            <span aria-hidden="true">▶</span> ${tr("Vypočuť článok", "Listen to this post")}</button>`
       : "";
+    /* views + comments only on the full blog page and for CMS posts */
+    const viewsHtml = (!limit && p._id)
+      ? `<span class="post-views" data-post-id="${p._id}"
+           title="${tr("Počet prečítaní", "Views")}"><span
+           class="material-symbols-outlined">visibility</span> <b>–</b></span>`
+      : "";
+    const commentsHtml = (!limit && p._id)
+      ? `<div class="post-comments" data-post-id="${p._id}"></div>`
+      : "";
     return `
     <article class="post">
       <h2>${pick(p, "title")}</h2>
       <div class="meta">${formatDate(p.date)}${tags
-        .map(t => `<span class="tag">${t}</span>`).join("")}</div>
+        .map(t => `<span class="tag">${t}</span>`).join("")}${viewsHtml}</div>
       ${photosHtml}
       ${audioHtml}
       <div class="post-body">${pick(p, "body") || ""}</div>
       ${listenHtml}
+      ${commentsHtml}
     </article>`;
   }).join("");
+
+  document.dispatchEvent(new CustomEvent("posts-rendered", { detail: { targetId } }));
 
   /* lightbox for post photos */
   target.querySelectorAll(".post-photo").forEach(img => {
