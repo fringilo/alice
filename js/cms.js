@@ -25,11 +25,12 @@
       }
     };
 
-    const [posts, gallery, vlogs] = await Promise.all([
-      load("posts"), load("gallery"), load("vlogs"),
+    const [posts, gallery, vlogs, postImages] = await Promise.all([
+      load("posts"), load("gallery"), load("vlogs"), load("postImages"),
     ]);
 
     if (posts.length) window.LAGOTTO_POSTS = [...(window.LAGOTTO_POSTS || []), ...posts];
+    if (postImages.length) window.LAGOTTO_POST_IMAGES = [...(window.LAGOTTO_POST_IMAGES || []), ...postImages];
     if (gallery.length) window.LAGOTTO_GALLERY = [...(window.LAGOTTO_GALLERY || []), ...gallery];
     if (vlogs.length) window.LAGOTTO_VLOGS = [...(window.LAGOTTO_VLOGS || []), ...vlogs];
 

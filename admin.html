@@ -173,8 +173,16 @@
             <textarea id="post-body-en"></textarea>
           </div>
           <div class="field">
-            <label for="post-image">Fotka k príspevku (voliteľné)</label>
-            <input type="file" id="post-image" accept="image/*">
+            <label for="post-image">Fotky k príspevku (voliteľné, môžeš vybrať viac naraz)</label>
+            <input type="file" id="post-image" accept="image/*" multiple>
+            <div class="hint">Prvá fotka je úvodná; ostatné sa zobrazia v mriežke pod ňou.</div>
+          </div>
+          <div id="post-extra-photos" class="hidden"></div>
+          <div class="field">
+            <label for="post-audio">Audio verzia – odkaz na MP3 (voliteľné)</label>
+            <input type="url" id="post-audio" placeholder="https://…/nahravka.mp3">
+            <div class="hint">Ak nahráš vlastnú nahrávku (napr. na Firebase Storage alebo iný hosting),
+            zobrazí sa v príspevku prehrávač. Bez odkazu má príspevok automatické tlačidlo „Vypočuť článok".</div>
           </div>
           <button class="btn" type="submit">Uložiť príspevok</button>
           <button class="btn secondary hidden" type="button" id="post-cancel">Zrušiť úpravu</button>
@@ -389,7 +397,7 @@ if (!window.FIREBASE_CONFIG) {
   };
 
   /* ---------- data lists ---------- */
-  const cache = { posts: [], gallery: [], vlogs: [] };
+  const cache = { posts: [], gallery: [], vlogs: [], postImages: [] };
 
   async function loadList(name) {
     const snap = await getDocs(collection(db, name));
@@ -437,13 +445,17 @@ if (!window.FIREBASE_CONFIG) {
         $("post-tags").value = (p.tags || []).join(", ");
         $("post-body").value = htmlToText(p.body);
         $("post-body-en").value = htmlToText(p.body_en);
+        $("post-audio").value = p.audio || "";
         $("post-form-title").textContent = "Upraviť príspevok";
         show("post-cancel");
+        renderPostExtras(p._id);
         window.scrollTo({ top: 0, behavior: "smooth" });
       },
       onDel: async () => {
         if (!confirmDel()) return;
         await deleteDoc(doc(db, "posts", p._id));
+        const extras = (await loadList("postImages")).filter(x => x.postId === p._id);
+        for (const x of extras) await deleteDoc(doc(db, "postImages", x._id));
         toast("Príspevok vymazaný.");
         renderPostsList();
       },
@@ -456,8 +468,35 @@ if (!window.FIREBASE_CONFIG) {
     $("post-date").value = today();
     $("post-form-title").textContent = "Nový príspevok";
     show("post-cancel", false);
+    const box = $("post-extra-photos");
+    box.innerHTML = "";
+    box.classList.add("hidden");
   };
   $("post-cancel").addEventListener("click", resetPostForm);
+
+  /* extra photos of a post (postImages collection) */
+  async function renderPostExtras(postId) {
+    const box = $("post-extra-photos");
+    box.classList.remove("hidden");
+    const imgs = (await loadList("postImages"))
+      .filter(x => x.postId === postId)
+      .sort((a, b) => (a.order || 0) - (b.order || 0));
+    box.innerHTML = imgs.length
+      ? `<div class="field"><label>Ďalšie fotky príspevku</label></div>` : "";
+    imgs.forEach(x => {
+      const div = document.createElement("div");
+      div.className = "item-row";
+      div.innerHTML = `<img src="${x.src}" alt=""><div class="grow"></div>
+        <button class="del" type="button" title="Vymazať"><span class="material-symbols-outlined">delete</span></button>`;
+      div.querySelector(".del").addEventListener("click", async () => {
+        if (!confirmDel()) return;
+        await deleteDoc(doc(db, "postImages", x._id));
+        toast("Fotka vymazaná.");
+        renderPostExtras(postId);
+      });
+      box.appendChild(div);
+    });
+  }
 
   $("post-form").addEventListener("submit", async e => {
     e.preventDefault();
@@ -466,18 +505,31 @@ if (!window.FIREBASE_CONFIG) {
       date: $("post-date").value,
       tags: $("post-tags").value.split(",").map(s => s.trim()).filter(Boolean),
       body: textToHtml($("post-body").value),
+      audio: $("post-audio").value.trim(),
     };
     const tEn = $("post-title-en").value.trim();
     const bEn = textToHtml($("post-body-en").value);
     if (tEn) data.title_en = tEn;
     if (bEn) data.body_en = bEn;
-    const file = $("post-image").files[0];
-    if (file) data.image = await compressImage(file);
+    const files = [...$("post-image").files];
+    if (files.length) data.image = await compressImage(files[0]);
     try {
-      const id = $("post-id").value;
+      let id = $("post-id").value;
       if (id) await updateDoc(doc(db, "posts", id), data);
-      else await addDoc(collection(db, "posts"), data);
-      toast(id ? "Príspevok upravený." : "Príspevok pridaný.");
+      else { const ref = await addDoc(collection(db, "posts"), data); id = ref.id; }
+      const extra = files.slice(1);
+      if (extra.length) {
+        toast(`Nahrávam ${extra.length} ďalších fotiek…`);
+        for (let i = 0; i < extra.length; i++) {
+          await addDoc(collection(db, "postImages"), {
+            postId: id,
+            src: await compressImage(extra[i], 1400),
+            order: Date.now() + i,
+            date: data.date,
+          });
+        }
+      }
+      toast($("post-id").value ? "Príspevok upravený." : "Príspevok pridaný.");
       resetPostForm();
       renderPostsList();
     } catch (err) {

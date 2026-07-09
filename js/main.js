@@ -42,17 +42,96 @@ function renderPosts(targetId, limit) {
     return;
   }
 
-  target.innerHTML = shown.map(p => {
+  /* photos per post: cover (p.image) + extra images from postImages */
+  const photoSets = shown.map(p => {
+    const arr = [];
+    if (p.image) arr.push({ src: asset(p.image), caption: pick(p, "title") || "" });
+    (window.LAGOTTO_POST_IMAGES || [])
+      .filter(x => x.postId === p._id)
+      .sort((a, b) => (a.order || 0) - (b.order || 0))
+      .forEach(x => arr.push({ src: asset(x.src), caption: pick(p, "title") || "" }));
+    return arr;
+  });
+
+  const canSpeak = "speechSynthesis" in window;
+
+  target.innerHTML = shown.map((p, idx) => {
     const tags = (LANG() === "en" ? (p.tags_en || p.tags) : p.tags) || [];
+    const photos = photoSets[idx];
+    const photosHtml = photos.length === 1
+      ? `<img class="post-photo" src="${photos[0].src}" alt="${photos[0].caption}"
+           loading="lazy" data-post="${idx}" data-i="0">`
+      : photos.length > 1
+        ? `<div class="post-photos${photos.length === 2 ? " cols-2" : ""}">${photos.map((ph, i) =>
+            `<img class="post-photo" src="${ph.src}" alt="${ph.caption}"
+              loading="lazy" data-post="${idx}" data-i="${i}">`).join("")}</div>`
+        : "";
+    const audioHtml = p.audio
+      ? `<div class="post-audio"><audio controls preload="none" src="${asset(p.audio)}"></audio></div>`
+      : "";
+    const listenHtml = (!p.audio && canSpeak)
+      ? `<button class="listen-btn" type="button" data-post="${idx}">
+           <span aria-hidden="true">▶</span> ${tr("Vypočuť článok", "Listen to this post")}</button>`
+      : "";
     return `
     <article class="post">
       <h2>${pick(p, "title")}</h2>
       <div class="meta">${formatDate(p.date)}${tags
         .map(t => `<span class="tag">${t}</span>`).join("")}</div>
-      ${p.image ? `<img src="${asset(p.image)}" alt="${pick(p, "title")}" loading="lazy">` : ""}
+      ${photosHtml}
+      ${audioHtml}
       <div class="post-body">${pick(p, "body") || ""}</div>
+      ${listenHtml}
     </article>`;
   }).join("");
+
+  /* lightbox for post photos */
+  target.querySelectorAll(".post-photo").forEach(img => {
+    img.addEventListener("click", () => {
+      lbItems = photoSets[Number(img.dataset.post)];
+      openLightbox(Number(img.dataset.i));
+    });
+  });
+
+  /* read-aloud buttons */
+  target.querySelectorAll(".listen-btn").forEach(btn => {
+    btn.addEventListener("click", () => toggleSpeech(btn, shown[Number(btn.dataset.post)]));
+  });
+}
+
+/* ---------- Read post aloud (Web Speech API) ---------- */
+let activeSpeechBtn = null;
+
+function stopSpeech() {
+  window.speechSynthesis.cancel();
+  if (activeSpeechBtn) {
+    activeSpeechBtn.classList.remove("playing");
+    activeSpeechBtn.querySelector("span").textContent = "▶";
+    activeSpeechBtn = null;
+  }
+}
+
+function toggleSpeech(btn, post) {
+  const synth = window.speechSynthesis;
+  if (activeSpeechBtn === btn && (synth.speaking || synth.pending)) { stopSpeech(); return; }
+  stopSpeech();
+
+  const tmp = document.createElement("div");
+  tmp.innerHTML = pick(post, "body") || "";
+  const text = `${pick(post, "title") || ""}. ${tmp.textContent || ""}`.trim();
+  if (!text) return;
+
+  const u = new SpeechSynthesisUtterance(text);
+  const lang = LANG() === "en" ? "en" : "sk";
+  u.lang = lang === "en" ? "en-US" : "sk-SK";
+  const voice = synth.getVoices().find(v => (v.lang || "").toLowerCase().startsWith(lang));
+  if (voice) u.voice = voice;
+  u.onend = u.onerror = stopSpeech;
+
+  btn.classList.add("playing");
+  btn.querySelector("span").textContent = "■";
+  activeSpeechBtn = btn;
+  synth.speak(u);
 }
 
 /* ---------- Gallery + lightbox ---------- */
