@@ -669,34 +669,6 @@ section.block.alt .timeline li::before { border-color: var(--surface-container-l
 }
 .empty-state h3 { color: var(--on-background); }
 
-/* ===== Slide viewer ===== */
-.slide-viewer { text-align: center; }
-.slide-viewer .stage img {
-  border-radius: var(--r-xl);
-  margin: 0 auto; cursor: zoom-in;
-}
-.slide-viewer .controls {
-  display: flex; justify-content: center; align-items: center;
-  gap: var(--sp-sm); margin-top: var(--sp-md); flex-wrap: wrap;
-}
-.slide-viewer .counter {
-  font-family: var(--font-label); font-weight: 600;
-  color: var(--on-surface-variant); min-width: 70px;
-}
-.slide-thumbs {
-  display: flex; gap: 8px; overflow-x: auto;
-  margin-top: var(--sp-sm); padding-bottom: 6px;
-  scrollbar-width: thin; scrollbar-color: var(--outline-variant) transparent;
-}
-.slide-thumbs img {
-  height: 58px; border-radius: var(--r-sm); cursor: pointer;
-  opacity: .5; border: 2px solid transparent;
-  transition: opacity .2s, border-color .2s;
-}
-.slide-thumbs img.active, .slide-thumbs img:hover {
-  opacity: 1; border-color: var(--primary);
-}
-
 /* ===== Social links ===== */
 .social-links { display: flex; gap: 14px; align-items: center; }
 .social-links a {

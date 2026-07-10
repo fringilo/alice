@@ -138,5 +138,5 @@ js/data/vlogs.js       – vlogs              ← edit to add content
 assets/img/            – site imagery (hero, profile, coat)
 assets/gallery/        – your photos
 assets/video/          – your local videos
-assets/guide/          – the 12 pages of the original field guide (slide viewer)
+
 ```

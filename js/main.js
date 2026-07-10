@@ -386,46 +386,4 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-/* ---------- Slide viewer (original field guide) ---------- */
-function initSlideViewer(targetId, slideCount) {
-  const target = document.getElementById(targetId);
-  if (!target) return;
-  const src = n => asset(`assets/guide/slide-${String(n).padStart(2, "0")}.jpg`);
-  const pageWord = tr("Strana", "Page");
-  let current = 1;
-
-  target.innerHTML = `
-    <div class="stage"><img id="sv-stage" src="${src(1)}" alt="${pageWord} 1"></div>
-    <div class="controls">
-      <button class="btn secondary" id="sv-prev">‹ ${tr("Predchádzajúca", "Previous")}</button>
-      <span class="counter" id="sv-counter">1 / ${slideCount}</span>
-      <button class="btn secondary" id="sv-next">${tr("Ďalšia", "Next")} ›</button>
-    </div>
-    <div class="slide-thumbs" id="sv-thumbs">
-      ${Array.from({ length: slideCount }, (_, i) =>
-        `<img src="${src(i + 1)}" data-n="${i + 1}" alt="${pageWord} ${i + 1}"
-          class="${i === 0 ? "active" : ""}" loading="lazy">`).join("")}
-    </div>`;
-
-  const stage = target.querySelector("#sv-stage");
-  const counter = target.querySelector("#sv-counter");
-  const thumbs = target.querySelectorAll("#sv-thumbs img");
-
-  function show(n) {
-    current = ((n - 1 + slideCount) % slideCount) + 1;
-    stage.src = src(current);
-    stage.alt = `${pageWord} ${current}`;
-    counter.textContent = `${current} / ${slideCount}`;
-    thumbs.forEach(t => t.classList.toggle("active", Number(t.dataset.n) === current));
-  }
-
-  target.querySelector("#sv-prev").addEventListener("click", () => show(current - 1));
-  target.querySelector("#sv-next").addEventListener("click", () => show(current + 1));
-  thumbs.forEach(t => t.addEventListener("click", () => show(Number(t.dataset.n))));
-  stage.addEventListener("click", () => {
-    lbItems = Array.from({ length: slideCount }, (_, i) =>
-      ({ src: src(i + 1), caption: tr(`Sprievodca plemenom – strana ${i + 1}`,
-                                      `Breed guide – page ${i + 1}`) }));
-    openLightbox(current - 1);
-  });
-}
+/* (slide viewer for the original field guide was removed) */
