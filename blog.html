@@ -79,6 +79,7 @@
 <script>
   renderPosts("posts");
   document.addEventListener("cms-ready", () => renderPosts("posts"));
+  window.addEventListener("hashchange", () => renderPosts("posts"));
 </script>
 </body>
 </html>

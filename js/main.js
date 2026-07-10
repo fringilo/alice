@@ -31,7 +31,15 @@ function renderPosts(targetId, limit) {
   if (!target) return;
   const posts = (window.LAGOTTO_POSTS || []).slice()
     .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
-  const shown = limit ? posts.slice(0, limit) : posts;
+
+  /* single-post view via blog.html#post=<id> (full blog page only) */
+  let single = null;
+  if (!limit) {
+    const m = location.hash.match(/post=([^&]+)/);
+    if (m) single = posts.find(p => p._id === decodeURIComponent(m[1])) || null;
+  }
+  const shown = single ? [single] : (limit ? posts.slice(0, limit) : posts);
+  if (single) document.title = (pick(single, "title") || "") + " – LaGioiatto";
 
   if (!shown.length) {
     target.innerHTML = `<div class="empty-state">
@@ -82,18 +90,55 @@ function renderPosts(targetId, limit) {
     const commentsHtml = (!limit && p._id)
       ? `<div class="post-comments" data-post-id="${p._id}"></div>`
       : "";
+    const shareHtml = p._id
+      ? `<button class="share-btn" type="button" data-post="${idx}">
+           <span class="material-symbols-outlined">share</span>
+           <span class="share-label">${tr("Zdieľať", "Share")}</span></button>`
+      : "";
+    const titleHtml = p._id
+      ? `<a class="post-link" href="blog.html#post=${encodeURIComponent(p._id)}">${pick(p, "title")}</a>`
+      : pick(p, "title");
     return `
     <article class="post">
-      <h2>${pick(p, "title")}</h2>
+      <h2>${titleHtml}</h2>
       <div class="meta">${formatDate(p.date)}${tags
         .map(t => `<span class="tag">${t}</span>`).join("")}${viewsHtml}</div>
       ${photosHtml}
       ${audioHtml}
       <div class="post-body">${pick(p, "body") || ""}</div>
-      ${listenHtml}
+      <div class="post-actions">${listenHtml}${shareHtml}</div>
       ${commentsHtml}
     </article>`;
   }).join("");
+
+  if (single) {
+    target.insertAdjacentHTML("afterbegin",
+      `<a class="gallery-back" href="blog.html" style="margin-bottom:20px;display:inline-flex">
+        ← ${tr("Všetky príspevky", "All posts")}</a>`);
+  }
+
+  /* share buttons: native share sheet, or copy link */
+  target.querySelectorAll(".share-btn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const p = shown[Number(btn.dataset.post)];
+      const url = location.origin + location.pathname.replace(/[^/]*$/, "")
+        + "blog.html#post=" + encodeURIComponent(p._id);
+      const title = pick(p, "title") || "LaGioiatto";
+      if (navigator.share) {
+        try { await navigator.share({ title, url }); } catch (e) { /* cancelled */ }
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(url);
+        const label = btn.querySelector(".share-label");
+        const old = label.textContent;
+        label.textContent = tr("Odkaz skopírovaný ✓", "Link copied ✓");
+        setTimeout(() => { label.textContent = old; }, 2500);
+      } catch (e) {
+        prompt(tr("Skopíruj odkaz:", "Copy the link:"), url);
+      }
+    });
+  });
 
   document.dispatchEvent(new CustomEvent("posts-rendered", { detail: { targetId } }));
 
