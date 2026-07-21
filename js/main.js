@@ -25,7 +25,48 @@ function formatDate(iso) {
   return `${d}. ${m}. ${y}`;
 }
 
-/* ---------- Blog ---------- */
+/* ---------- Blog ----------
+
+   Inline photos: write [foto1] (or [photo1]) on its own line in the post text
+   and photo no. 1 – counted in upload order, cover photo = 1 – is rendered
+   right there instead of in the grid at the top. An optional caption can
+   follow a colon: [foto2: Gioia pri jazere].
+   Photos that are never referenced keep the old behaviour (grid on top).   */
+
+/* matches a marker, optionally wrapped in its own <p>…</p> */
+const PHOTO_MARKER =
+  /(?:<p>\s*)?\[\s*(?:foto|photo)\s*(\d+)\s*(?::\s*([^\]]*?))?\s*\](?:\s*<\/p>)?/gi;
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"]/g, c =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+}
+
+/* replaces markers in `body` with real <figure>s; returns the html plus the
+   set of photo indexes that were consumed */
+function placeInlinePhotos(body, photos, postIdx) {
+  const used = new Set();
+  const html = String(body).replace(PHOTO_MARKER, (m, num, caption) => {
+    const i = Number(num) - 1;
+    const ph = photos[i];
+    if (!ph || used.has(i)) return "";           // missing / duplicate → drop marker
+    used.add(i);
+    const cap = (caption || "").trim();
+    const alt = escapeHtml(cap || ph.caption || "");
+    return `<figure class="post-figure">
+      <img class="post-photo" src="${ph.src}" alt="${alt}"
+        loading="lazy" data-post="${postIdx}" data-i="${i}">
+      ${cap ? `<figcaption>${escapeHtml(cap)}</figcaption>` : ""}
+    </figure>`;
+  });
+  return { html, used };
+}
+
+/* strip markers for read-aloud / any plain-text use */
+function stripPhotoMarkers(body) {
+  return String(body || "").replace(PHOTO_MARKER, "");
+}
+
 function renderPosts(targetId, limit) {
   const target = document.getElementById(targetId);
   if (!target) return;
@@ -66,13 +107,18 @@ function renderPosts(targetId, limit) {
   target.innerHTML = shown.map((p, idx) => {
     const tags = (LANG() === "en" ? (p.tags_en || p.tags) : p.tags) || [];
     const photos = photoSets[idx];
-    const photosHtml = photos.length === 1
-      ? `<img class="post-photo" src="${photos[0].src}" alt="${photos[0].caption}"
-           loading="lazy" data-post="${idx}" data-i="0">`
-      : photos.length > 1
-        ? `<div class="post-photos${photos.length === 2 ? " cols-2" : ""}">${photos.map((ph, i) =>
-            `<img class="post-photo" src="${ph.src}" alt="${ph.caption}"
-              loading="lazy" data-post="${idx}" data-i="${i}">`).join("")}</div>`
+
+    /* [foto1] / [photo1] markers in the body place a photo inside the text */
+    const { html: bodyHtml, used } = placeInlinePhotos(pick(p, "body") || "", photos, idx);
+
+    const rest = photos.map((ph, i) => ({ ph, i })).filter(x => !used.has(x.i));
+    const photosHtml = rest.length === 1
+      ? `<img class="post-photo" src="${rest[0].ph.src}" alt="${rest[0].ph.caption}"
+           loading="lazy" data-post="${idx}" data-i="${rest[0].i}">`
+      : rest.length > 1
+        ? `<div class="post-photos${rest.length === 2 ? " cols-2" : ""}">${rest.map(x =>
+            `<img class="post-photo" src="${x.ph.src}" alt="${x.ph.caption}"
+              loading="lazy" data-post="${idx}" data-i="${x.i}">`).join("")}</div>`
         : "";
     const audioHtml = p.audio
       ? `<div class="post-audio"><audio controls preload="none" src="${asset(p.audio)}"></audio></div>`
@@ -105,7 +151,7 @@ function renderPosts(targetId, limit) {
         .map(t => `<span class="tag">${t}</span>`).join("")}${viewsHtml}</div>
       ${photosHtml}
       ${audioHtml}
-      <div class="post-body">${pick(p, "body") || ""}</div>
+      <div class="post-body">${bodyHtml}</div>
       <div class="post-actions">${listenHtml}${shareHtml}</div>
       ${commentsHtml}
     </article>`;
@@ -174,7 +220,7 @@ function toggleSpeech(btn, post) {
   stopSpeech();
 
   const tmp = document.createElement("div");
-  tmp.innerHTML = pick(post, "body") || "";
+  tmp.innerHTML = stripPhotoMarkers(pick(post, "body"));
   const text = `${pick(post, "title") || ""}. ${tmp.textContent || ""}`.trim();
   if (!text) return;
 

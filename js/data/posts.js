@@ -17,6 +17,16 @@
 //    body: `<p>Prvý odsek…</p>`,
 //    body_en: `<p>First paragraph…</p>` // voliteľné / optional
 //  },
+//
+//  FOTKA V TEXTE / PHOTO INSIDE THE TEXT
+//  Značka [foto1] (alebo [photo1]) v texte vloží danú fotku presne na to
+//  miesto. Číslujú sa v poradí: 1 = úvodná fotka (image), 2, 3, … = ďalšie
+//  fotky príspevku. Popis pod fotku pridáš cez dvojbodku:
+//  [foto2: Gioia pri jazere]. Fotky bez značky sa zobrazia v mriežke navrchu.
+//
+//    body: `<p>Prvý odsek…</p>
+//           <p>[foto2: Gioia pri jazere]</p>
+//           <p>Druhý odsek…</p>`,
 // ============================================================
 
 window.LAGOTTO_POSTS = [];

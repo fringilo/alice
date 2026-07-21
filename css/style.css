@@ -480,6 +480,16 @@ section.block.alt .timeline li::before { border-color: var(--surface-container-l
 }
 .post img { border-radius: var(--r-lg); margin: var(--sp-sm) 0; }
 .post .post-photo { cursor: zoom-in; }
+/* photo placed inside the text via a [foto1] marker */
+.post-figure { margin: var(--sp-md) 0; }
+.post-figure img {
+  display: block; width: 100%; height: auto;
+  border-radius: var(--r-lg); margin: 0;
+}
+.post-figure figcaption {
+  font-family: var(--font-label); font-size: .82rem;
+  color: var(--secondary); text-align: center; margin-top: 8px;
+}
 .post-photos {
   display: grid; grid-template-columns: repeat(3, 1fr);
   gap: 10px; margin: var(--sp-sm) 0;

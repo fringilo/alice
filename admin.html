@@ -167,16 +167,21 @@
           <div class="field">
             <label for="post-body">Text (SK)</label>
             <textarea id="post-body" required placeholder="Každý odsek na nový riadok…"></textarea>
-            <div class="hint">Stačí písať obyčajný text – odseky sa vytvoria automaticky. Kto chce, môže použiť aj HTML.</div>
+            <div class="hint">Stačí písať obyčajný text – odseky sa vytvoria automaticky. Kto chce, môže použiť aj HTML.
+            <br><b>Fotka v texte:</b> napíš <code>[foto1]</code> na samostatný riadok tam, kde má byť fotka č. 1.
+            Popis pod fotkou pridáš cez dvojbodku: <code>[foto2: Gioia pri jazere]</code>.
+            Čísla fotiek vidíš v zozname pod formulárom.</div>
           </div>
           <div class="field">
             <label for="post-body-en">Text (EN, voliteľné)</label>
             <textarea id="post-body-en"></textarea>
+            <div class="hint">V anglickej verzii použi rovnaké značky – <code>[foto1]</code> aj <code>[photo1]</code> fungujú.</div>
           </div>
           <div class="field">
             <label for="post-image">Fotky k príspevku (voliteľné, môžeš vybrať viac naraz)</label>
             <input type="file" id="post-image" accept="image/*" multiple>
-            <div class="hint">Prvá fotka je úvodná; ostatné sa zobrazia v mriežke pod ňou.</div>
+            <div class="hint">Prvá fotka je úvodná (č. 1); ostatné dostanú čísla 2, 3, …
+            Fotky, ktoré v texte nespomenieš značkou, sa zobrazia v mriežke navrchu ako doteraz.</div>
           </div>
           <div id="post-extra-photos" class="hidden"></div>
           <div class="field">
@@ -460,7 +465,7 @@ if (!window.FIREBASE_CONFIG) {
         $("post-audio").value = p.audio || "";
         $("post-form-title").textContent = "Upraviť príspevok";
         show("post-cancel");
-        renderPostExtras(p._id);
+        renderPostExtras(p._id, p.image);
         window.scrollTo({ top: 0, behavior: "smooth" });
       },
       onDel: async () => {
@@ -487,24 +492,34 @@ if (!window.FIREBASE_CONFIG) {
   $("post-cancel").addEventListener("click", resetPostForm);
 
   /* extra photos of a post (postImages collection) */
-  async function renderPostExtras(postId) {
+  async function renderPostExtras(postId, cover) {
     const box = $("post-extra-photos");
     box.classList.remove("hidden");
     const imgs = (await loadList("postImages"))
       .filter(x => x.postId === postId)
       .sort((a, b) => (a.order || 0) - (b.order || 0));
-    box.innerHTML = imgs.length
-      ? `<div class="field"><label>Ďalšie fotky príspevku</label></div>` : "";
-    imgs.forEach(x => {
+
+    /* numbering must match main.js: cover = 1, then extras in order */
+    const items = [];
+    if (cover) items.push({ src: cover, cover: true });
+    imgs.forEach(x => items.push({ src: x.src, doc: x }));
+
+    box.innerHTML = items.length
+      ? `<div class="field"><label>Fotky príspevku – čísla pre značky v texte</label>
+         <div class="hint">Napr. <code>[foto1]</code> vloží prvú fotku na to miesto v texte.</div></div>`
+      : "";
+    items.forEach((it, i) => {
       const div = document.createElement("div");
       div.className = "item-row";
-      div.innerHTML = `<img src="${x.src}" alt=""><div class="grow"></div>
-        <button class="del" type="button" title="Vymazať"><span class="material-symbols-outlined">delete</span></button>`;
-      div.querySelector(".del").addEventListener("click", async () => {
+      div.innerHTML = `<img src="${it.src}" alt="">
+        <div class="grow"><div class="t"><code>[foto${i + 1}]</code></div>
+        <div class="d">${it.cover ? "úvodná fotka" : ""}</div></div>
+        ${it.doc ? `<button class="del" type="button" title="Vymazať"><span class="material-symbols-outlined">delete</span></button>` : ""}`;
+      if (it.doc) div.querySelector(".del").addEventListener("click", async () => {
         if (!confirmDel()) return;
-        await deleteDoc(doc(db, "postImages", x._id));
+        await deleteDoc(doc(db, "postImages", it.doc._id));
         toast("Fotka vymazaná.");
-        renderPostExtras(postId);
+        renderPostExtras(postId, cover);
       });
       box.appendChild(div);
     });
