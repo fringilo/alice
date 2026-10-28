@@ -180,7 +180,10 @@
           <div class="field">
             <label for="post-image">Fotky k príspevku (voliteľné, môžeš vybrať viac naraz)</label>
             <input type="file" id="post-image" accept="image/*" multiple>
-            <div class="hint">Prvá fotka je úvodná (č. 1); ostatné dostanú čísla 2, 3, …
+            <label class="hidden" id="post-replace-cover-wrap" style="display:flex;gap:.4rem;align-items:center;font-weight:normal;margin-top:.4rem">
+              <input type="checkbox" id="post-replace-cover" style="width:auto"> Nahradiť úvodnú fotku (č. 1) prvou vybranou fotkou</label>
+            <div class="hint">Nový príspevok: prvá fotka je úvodná (č. 1), ostatné dostanú čísla 2, 3, …
+            Pri úprave príspevku sa nové fotky pridajú na koniec (ďalšie čísla) – úvodná fotka ostane, ak nezaškrtneš „Nahradiť“.
             Fotky, ktoré v texte nespomenieš značkou, sa zobrazia v mriežke navrchu ako doteraz.</div>
           </div>
           <div id="post-extra-photos" class="hidden"></div>
@@ -465,6 +468,9 @@ if (!window.FIREBASE_CONFIG) {
         $("post-audio").value = p.audio || "";
         $("post-form-title").textContent = "Upraviť príspevok";
         show("post-cancel");
+        editingHasCover = !!p.image;
+        $("post-replace-cover").checked = false;
+        show("post-replace-cover-wrap", editingHasCover);
         renderPostExtras(p._id, p.image);
         window.scrollTo({ top: 0, behavior: "smooth" });
       },
@@ -479,8 +485,11 @@ if (!window.FIREBASE_CONFIG) {
     })));
   }
 
+  let editingHasCover = false;
   const resetPostForm = () => {
     $("post-form").reset();
+    editingHasCover = false;
+    show("post-replace-cover-wrap", false);
     $("post-id").value = "";
     $("post-date").value = today();
     $("post-form-title").textContent = "Nový príspevok";
@@ -539,12 +548,15 @@ if (!window.FIREBASE_CONFIG) {
     if (tEn) data.title_en = tEn;
     if (bEn) data.body_en = bEn;
     const files = [...$("post-image").files];
-    if (files.length) data.image = await compressImage(files[0]);
+    /* editing a post that already has a cover: append new photos as 2, 3, …
+       unless the user explicitly ticked "replace cover" */
+    const keepCover = $("post-id").value && editingHasCover && !$("post-replace-cover").checked;
+    if (files.length && !keepCover) data.image = await compressImage(files[0]);
     try {
       let id = $("post-id").value;
       if (id) await updateDoc(doc(db, "posts", id), data);
       else { const ref = await addDoc(collection(db, "posts"), data); id = ref.id; }
-      const extra = files.slice(1);
+      const extra = keepCover ? files : files.slice(1);
       if (extra.length) {
         toast(`Nahrávam ${extra.length} ďalších fotiek…`);
         for (let i = 0; i < extra.length; i++) {
