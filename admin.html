@@ -603,6 +603,7 @@ if (!window.FIREBASE_CONFIG) {
           <div class="d">${g.date || ""}</div>
         </div>
         <select class="row-album"></select>
+        <button class="ed" title="Premenovať"><span class="material-symbols-outlined">edit</span></button>
         <button class="del" title="Vymazať"><span class="material-symbols-outlined">delete</span></button>`;
       div.querySelector(".t").textContent = g.caption || "(bez popisu)";
       const sel = div.querySelector(".row-album");
@@ -614,6 +615,18 @@ if (!window.FIREBASE_CONFIG) {
           toast(sel.value ? "Fotka presunutá do albumu." : "Fotka mimo albumu.");
           renderAlbumsList(galAlbums(), galPhotos());
         } catch (err) { toast("Presun zlyhal: " + (err.code || err.message)); }
+      });
+      div.querySelector(".ed").addEventListener("click", async () => {
+        const sk = prompt("Popis fotky (SK):", g.caption || "");
+        if (sk === null) return;
+        const en = prompt("Popis (EN, nepovinné):", g.caption_en || "");
+        if (en === null) return;
+        try {
+          await updateDoc(doc(db, "gallery", g._id), { caption: sk.trim(), caption_en: en.trim() });
+          g.caption = sk.trim(); g.caption_en = en.trim();
+          div.querySelector(".t").textContent = g.caption || "(bez popisu)";
+          toast("Fotka premenovaná.");
+        } catch (err) { toast("Premenovanie zlyhalo: " + (err.code || err.message)); }
       });
       div.querySelector(".del").addEventListener("click", async () => {
         if (!confirmDel()) return;

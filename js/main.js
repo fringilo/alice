@@ -372,6 +372,26 @@ function stepLightbox(dir) {
   openLightbox(lbIndex);
 }
 
+/* ---------- Homepage photo strip: newest photos from the gallery ---------- */
+function renderPhotoStrip(targetId, count = 3) {
+  const target = document.getElementById(targetId);
+  if (!target) return;
+  const photos = (window.LAGOTTO_GALLERY || [])
+    .filter(x => x.kind !== "album" && x.src)
+    .sort((a, b) => (b.date || "").localeCompare(a.date || ""))
+    .slice(0, count);
+  if (!photos.length) { target.innerHTML = ""; return; }
+  target.innerHTML = photos.map((g, i) =>
+    `<img src="${asset(g.src)}" alt="${escapeHtml(pick(g, "caption") || "")}"
+      loading="lazy" data-i="${i}" style="cursor:zoom-in">`).join("");
+  target.querySelectorAll("img").forEach(img => {
+    img.addEventListener("click", () => {
+      lbItems = photos.map(g => ({ src: asset(g.src), caption: pick(g, "caption") || "" }));
+      openLightbox(Number(img.dataset.i));
+    });
+  });
+}
+
 /* ---------- Vlogs ---------- */
 function renderVlogs(targetId, limit) {
   const target = document.getElementById(targetId);
