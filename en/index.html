@@ -61,27 +61,27 @@
     <a class="text-link" href="breed.html"><span data-edit="home.welcome.cta">The complete breed guide</span> →</a>
     <div class="stats-row">
       <div>
-        <div class="value" data-edit="home.stat1.value">Italy</div>
-        <div class="label" data-edit="home.stat1.label">Origin – Romagna region, Po river delta</div>
+        <div class="value" data-edit="home.stat1.value">Origin</div>
+        <div class="label" data-edit="home.stat1.label">Italy – Romagna region, Po river delta</div>
       </div>
       <div>
-        <div class="value" data-edit="home.stat2.value">43–48 cm</div>
-        <div class="label" data-edit="home.stat2.label">Height at withers (males), females 41–46 cm</div>
+        <div class="value" data-edit="home.stat2.value">Height</div>
+        <div class="label" data-edit="home.stat2.label">41–48 cm</div>
       </div>
       <div>
-        <div class="value" data-edit="home.stat3.value">13–16 kg</div>
-        <div class="label" data-edit="home.stat3.label">Weight of males, females 11–14 kg</div>
+        <div class="value" data-edit="home.stat3.value">Weight</div>
+        <div class="label" data-edit="home.stat3.label">11–16 kg</div>
       </div>
       <div>
-        <div class="value" data-edit="home.stat4.value">13–16 years</div>
-        <div class="label" data-edit="home.stat4.label">Average lifespan</div>
+        <div class="value" data-edit="home.stat4.value">Average lifespan</div>
+        <div class="label" data-edit="home.stat4.label">13–16 years</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- Latest video -->
-<section class="block alt center">
+<section class="block alt center" id="home-video" hidden>
   <div class="container">
     <h2 class="section-title" data-edit="home.video.title">Latest video</h2>
     <p class="section-sub" data-edit="home.video.sub">Moments with Gioia on video</p>
@@ -91,7 +91,7 @@
 </section>
 
 <!-- Latest diary posts -->
-<section class="block">
+<section class="block" id="home-diary">
   <div class="container">
     <h2 class="section-title" data-edit="home.diary.title">Latest from the diary</h2>
     <p class="section-sub" data-edit="home.diary.sub">Adventures, training and everyday life with Gioia</p>
@@ -101,7 +101,7 @@
 </section>
 
 <!-- Photo strip -->
-<section class="block alt center">
+<section class="block alt center" id="home-photos">
   <div class="container">
     <h2 class="section-title" data-edit="home.photos.title">From the gallery</h2>
     <div class="photo-strip" id="photo-strip"></div>
@@ -143,14 +143,19 @@
 <script src="../js/cms.js"></script>
 <script src="../js/sitetext.js"></script>
 <script>
-  renderPosts("latest-posts", 2);
-  renderVlogs("latest-vlog", 1);
-  renderPhotoStrip("photo-strip");
-  document.addEventListener("cms-ready", () => {
-    renderPosts("latest-posts", 2);
+  function renderHome() {
+    renderPosts("latest-posts", 3);
     renderVlogs("latest-vlog", 1);
     renderPhotoStrip("photo-strip");
-  });
+    /* the video section stays hidden until the first vlog exists;
+       keep the section backgrounds alternating either way */
+    const hasVlogs = (window.LAGOTTO_VLOGS || []).length > 0;
+    document.getElementById("home-video").hidden = !hasVlogs;
+    document.getElementById("home-diary").classList.toggle("alt", !hasVlogs);
+    document.getElementById("home-photos").classList.toggle("alt", hasVlogs);
+  }
+  renderHome();
+  document.addEventListener("cms-ready", renderHome);
 </script>
 </body>
 </html>

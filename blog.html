@@ -79,7 +79,10 @@
 <script>
   renderPosts("posts");
   document.addEventListener("cms-ready", () => renderPosts("posts"));
-  window.addEventListener("hashchange", () => renderPosts("posts"));
+  window.addEventListener("hashchange", () => {
+    renderPosts("posts");
+    window.scrollTo({ top: 0, behavior: "instant" });
+  });
 </script>
 </body>
 </html>

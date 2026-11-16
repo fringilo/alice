@@ -67,40 +67,84 @@ function stripPhotoMarkers(body) {
   return String(body || "").replace(PHOTO_MARKER, "");
 }
 
+/* static posts (js/data/posts.js) have no Firestore id – fall back to the date */
+function postKey(p) { return p._id || "s-" + (p.date || ""); }
+
+/* cover (p.image) + extra images from postImages, in upload order */
+function postPhotos(p) {
+  const arr = [];
+  if (p.image) arr.push({ src: asset(p.image), caption: pick(p, "title") || "" });
+  (window.LAGOTTO_POST_IMAGES || [])
+    .filter(x => p._id && x.postId === p._id)
+    .sort((a, b) => (a.order || 0) - (b.order || 0))
+    .forEach(x => arr.push({ src: asset(x.src), caption: pick(p, "title") || "" }));
+  return arr;
+}
+
+/* plain-text teaser cut at a word boundary */
+function postExcerpt(p, max = 170) {
+  const tmp = document.createElement("div");
+  tmp.innerHTML = stripPhotoMarkers(pick(p, "body"))
+    .replace(/<\/(p|div|li|h\d)>|<br\s*\/?>/gi, "$& ");   // keep a space between paragraphs
+  const text = (tmp.textContent || "").replace(/\s+/g, " ").trim();
+  if (text.length <= max) return text;
+  return text.slice(0, max).replace(/\s+\S*$/, "") + "…";
+}
+
+/* card list: photo, date, title, teaser → links to the single-post view */
+function renderPostCards(target, posts) {
+  target.innerHTML = `<div class="post-cards">${posts.map(p => {
+    const cover = postPhotos(p)[0];
+    return `
+    <a class="post-card" href="blog.html#post=${encodeURIComponent(postKey(p))}">
+      ${cover ? `<div class="post-card-img"><img src="${cover.src}" alt="" loading="lazy"></div>` : ""}
+      <div class="post-card-body">
+        <div class="meta">${formatDate(p.date)}</div>
+        <h3>${pick(p, "title") || ""}</h3>
+        <p>${escapeHtml(postExcerpt(p))}</p>
+        <span class="text-link">${tr("Čítať ďalej", "Read more")} →</span>
+      </div>
+    </a>`;
+  }).join("")}</div>`;
+}
+
+const BASE_TITLE = document.title;
+document.addEventListener("cms-ready", () => { window.LAGOTTO_CMS_READY = true; });
+
+/* renderPosts(id)        – diary page: card list, or one full post for
+                            blog.html#post=<id>
+   renderPosts(id, limit) – newest <limit> posts as cards (homepage)        */
 function renderPosts(targetId, limit) {
   const target = document.getElementById(targetId);
   if (!target) return;
   const posts = (window.LAGOTTO_POSTS || []).slice()
     .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
 
-  /* single-post view via blog.html#post=<id> (full blog page only) */
   let single = null;
   if (!limit) {
     const m = location.hash.match(/post=([^&]+)/);
-    if (m) single = posts.find(p => p._id === decodeURIComponent(m[1])) || null;
+    if (m) single = posts.find(p => postKey(p) === decodeURIComponent(m[1])) || null;
   }
-  const shown = single ? [single] : (limit ? posts.slice(0, limit) : posts);
-  if (single) document.title = (pick(single, "title") || "") + " – LaGioiatto";
 
-  if (!shown.length) {
-    target.innerHTML = `<div class="empty-state">
-      <h3>${tr("Zatiaľ žiadne príspevky", "No posts yet")}</h3>
-      <p>${tr("Prvý príspevok pridáš v súbore", "Add your first post in")}
-      <code>js/data/posts.js</code>.</p>
-    </div>`;
+  if (!single) {
+    document.title = BASE_TITLE;
+    if (!posts.length) {
+      /* posts are still on their way from the database – show nothing yet */
+      if (window.FIREBASE_CONFIG && !window.LAGOTTO_CMS_READY) { target.innerHTML = ""; return; }
+      target.innerHTML = `<div class="empty-state">
+        <h3>${tr("Zatiaľ žiadne príspevky", "No posts yet")}</h3>
+        <p>${tr("Prvý príspevok už čoskoro.", "The first post is coming soon.")}</p>
+      </div>`;
+      return;
+    }
+    renderPostCards(target, limit ? posts.slice(0, limit) : posts);
     return;
   }
 
-  /* photos per post: cover (p.image) + extra images from postImages */
-  const photoSets = shown.map(p => {
-    const arr = [];
-    if (p.image) arr.push({ src: asset(p.image), caption: pick(p, "title") || "" });
-    (window.LAGOTTO_POST_IMAGES || [])
-      .filter(x => x.postId === p._id)
-      .sort((a, b) => (a.order || 0) - (b.order || 0))
-      .forEach(x => arr.push({ src: asset(x.src), caption: pick(p, "title") || "" }));
-    return arr;
-  });
+  const shown = [single];
+  document.title = (pick(single, "title") || "") + " – LaGioiatto";
+
+  const photoSets = shown.map(postPhotos);
 
   const canSpeak = "speechSynthesis" in window;
 
@@ -127,23 +171,19 @@ function renderPosts(targetId, limit) {
       ? `<button class="listen-btn" type="button" data-post="${idx}">
            <span aria-hidden="true">▶</span> ${tr("Vypočuť článok", "Listen to this post")}</button>`
       : "";
-    /* views + comments only on the full blog page and for CMS posts */
-    const viewsHtml = (!limit && p._id)
+    /* views + comments only for CMS posts */
+    const viewsHtml = p._id
       ? `<span class="post-views" data-post-id="${p._id}"
            title="${tr("Počet prečítaní", "Views")}"><span
            class="material-symbols-outlined">visibility</span> <b>–</b></span>`
       : "";
-    const commentsHtml = (!limit && p._id)
+    const commentsHtml = p._id
       ? `<div class="post-comments" data-post-id="${p._id}"></div>`
       : "";
-    const shareHtml = p._id
-      ? `<button class="share-btn" type="button" data-post="${idx}">
+    const shareHtml = `<button class="share-btn" type="button" data-post="${idx}">
            <span class="material-symbols-outlined">share</span>
-           <span class="share-label">${tr("Zdieľať", "Share")}</span></button>`
-      : "";
-    const titleHtml = p._id
-      ? `<a class="post-link" href="blog.html#post=${encodeURIComponent(p._id)}">${pick(p, "title")}</a>`
-      : pick(p, "title");
+           <span class="share-label">${tr("Zdieľať", "Share")}</span></button>`;
+    const titleHtml = pick(p, "title");
     return `
     <article class="post">
       <h2>${titleHtml}</h2>
@@ -157,18 +197,16 @@ function renderPosts(targetId, limit) {
     </article>`;
   }).join("");
 
-  if (single) {
-    target.insertAdjacentHTML("afterbegin",
-      `<a class="gallery-back" href="blog.html" style="margin-bottom:20px;display:inline-flex">
-        ← ${tr("Všetky príspevky", "All posts")}</a>`);
-  }
+  target.insertAdjacentHTML("afterbegin",
+    `<a class="gallery-back" href="blog.html" style="margin-bottom:20px;display:inline-flex">
+      ← ${tr("Všetky príspevky", "All posts")}</a>`);
 
   /* share buttons: native share sheet, or copy link */
   target.querySelectorAll(".share-btn").forEach(btn => {
     btn.addEventListener("click", async () => {
       const p = shown[Number(btn.dataset.post)];
       const url = location.origin + location.pathname.replace(/[^/]*$/, "")
-        + "blog.html#post=" + encodeURIComponent(p._id);
+        + "blog.html#post=" + encodeURIComponent(postKey(p));
       const title = pick(p, "title") || "LaGioiatto";
       if (navigator.share) {
         try { await navigator.share({ title, url }); } catch (e) { /* cancelled */ }
